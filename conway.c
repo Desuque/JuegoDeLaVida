@@ -137,10 +137,10 @@ int main (int argc, char *argv[]) {
 		switch (c) {
 			case 'h':
 				help();
-			break;
+				break;
 			case 'V':
 				version();
-            break;
+				break;
 			case 'o':
 				matriz = inicializarMatriz(atoi(argv[2]), atoi(argv[3]));
 				if (procesarArchivo(matriz, argv[4], atoi(argv[2]),
@@ -148,7 +148,7 @@ int main (int argc, char *argv[]) {
 					avanzarEstados(matriz, atoi(argv[1]), optarg);
 				}
 				liberarRecursos(matriz, atoi(argv[2]));
-			break;
+				break;
 			case '?':
 				break;
 			default:
