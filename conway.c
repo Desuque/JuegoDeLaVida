@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <stdbool.h>
 #include "pbmlib.h"
 
 #define TAM_DATOS 5
@@ -40,33 +41,48 @@ void cargarMatriz(int** matriz, int fila, int columna) {
 	matriz[fila][columna] = ENCENDIDO;
 }
 
-void procesarArchivo(int** matriz, char* fileName) {
+bool infoValida(int fila, int columna, int tam_M, int tam_N) {
+	if(fila>tam_M || columna>tam_N) {
+		fprintf(stderr, "Las coordenadas ingresadas no son validas.\n");
+		return false;
+	}
+	return true;
+}
+
+int procesarArchivo(int** matriz, char* fileName, int tam_M, int tam_N) {
 	FILE *archivo;
 	char string[TAM_DATOS];
   	memset(&string[0], 0, TAM_DATOS);
 	archivo = fopen(fileName,"r");
-	if (archivo == NULL) {
+	if(archivo == NULL) {
 		fprintf(stderr, "Error al abrir el archivo.\n");
 	} else {
 		printf("Leyendo estado inicial...\n");
 		while(fgets(string, sizeof(string), archivo) != NULL) {
-			cargarMatriz(matriz, atoi(&string[0]), atoi(&string[2]));
+			unsigned int fila = atoi(&string[0]);
+			unsigned int columna = atoi(&string[2]);
+			if (infoValida(fila, columna, tam_M, tam_N)) {
+				cargarMatriz(matriz, fila, columna);
+			} else {
+				return -1;
+			}
 	    }
 	}
 	fclose (archivo);
+	return 0;
 }
 
 /**
  * Asigno memoria dinamica para la matriz de datos
  * y dejo todos los casilleros marcados como APAGADOS
  */
-int** inicializarMatriz(int filas, int columnas) {
+int** inicializarMatriz(unsigned int filas, unsigned int columnas) {
 	int **matriz = (int **)malloc(filas * sizeof(int*));
-	for (int i=0; i<filas; i++) {
+	for (unsigned int i=0; i<filas; i++) {
 		matriz[i] = (int *)malloc(columnas * sizeof(int));
 	}
-	for(int i=0; i<filas; i++) {
-		for(int j=0; j<columnas; j++) {
+	for(unsigned int i=0; i<filas; i++) {
+		for(unsigned int j=0; j<columnas; j++) {
 			matriz[i][j] = APAGADO;
 		}
 	}
@@ -81,19 +97,24 @@ void grabarEstado(int** matriz) {
 	//TODO PBM LIB
 }
 
-void avanzarEstados(int** matriz, int iteraciones, char* estado) {
-	for(int i=0; i<iteraciones; i++) {
+//TODO IMPORTANTE!
+//Adentro de avanzarEstados hace falta crear
+//la funcion "vecinos()
+
+void avanzarEstados(int** matriz, unsigned int iteraciones, char* estado) {
+	for(unsigned int i=0; i<iteraciones; i++) {
 		printf("Grabando %s_%d.pbm\n", estado, i+1);
 		grabarEstado(matriz);
 		recalcularMatriz(matriz);
 	}
+	printf("Listo\n");
 }
 
-void liberarRecursos(int** matriz, int filas) {
+void liberarRecursos(int** matriz, unsigned int filas) {
 	/**
 	* Libero la memoria utilizada por la matriz
 	*/
-	for (int i=0; i<filas; i++) {
+	for (unsigned int i=0; i<filas; i++) {
 		free(matriz[i]);
 	}
 	free(matriz);
@@ -122,8 +143,10 @@ int main (int argc, char *argv[]) {
             break;
 			case 'o':
 				matriz = inicializarMatriz(atoi(argv[2]), atoi(argv[3]));
-				procesarArchivo(matriz, argv[4]);
-				avanzarEstados(matriz, atoi(argv[1]), optarg);
+				if (procesarArchivo(matriz, argv[4], atoi(argv[2]),
+						atoi(argv[3])) != -1) {
+					avanzarEstados(matriz, atoi(argv[1]), optarg);
+				}
 				liberarRecursos(matriz, atoi(argv[2]));
 			break;
 			case '?':
