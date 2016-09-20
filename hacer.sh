@@ -18,13 +18,23 @@ then
 	do
 		if test -f $ARCHIVO
 		then
+			echo "Compilado ${ARCHIVO}"
 			$CC $FLAGS $ARCHIVO
 		fi
 	done
 fi
+ARCHIVOS=
+for ARCHIVO in *.o
+do
+	ARCHIVOS="${ARCHIVOS} ${ARCHIVO}"
+done
 
-$CC *.o -o $PROGRAMA
+$CC ${ARCHIVOS} -o $PROGRAMA
+echo "$CC ${ARCHIVOS} -o $PROGRAMA"
 
 rm *.o
 
 ./conway
+
+echo "
+"

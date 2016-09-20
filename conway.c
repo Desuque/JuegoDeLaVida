@@ -121,6 +121,7 @@ void liberarRecursos(int** matriz, unsigned int filas) {
 }
 
 int main (int argc, char *argv[]) {
+	printf("hola!");
 	int **matriz;
 	int c;
 	while (1) {
