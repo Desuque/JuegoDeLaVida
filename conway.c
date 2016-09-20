@@ -100,48 +100,111 @@ unsigned int vecinos(int** matriz,
 		
 		unsigned int seleccionado;
 		unsigned int encontrados = 0;
-		
-		for( seleccionado = 0, seleccionado < 8, seleccionado += 1){
+		//printf("Estoy parado en %d %d\n",i,j);
+		for( seleccionado = 0; seleccionado < 8; seleccionado += 1){
 			int f = fOffsets[seleccionado] + i;
 			int c = cOffsets[seleccionado] + j;
 			
-			if (f < 0 ) f += m
-			if (c < 0 ) c += n
+			if (f < 0 ) f += m;
+			if (f >= m) f -= m;
 			
-			if ( matriz[f][c] == ENCENDIDO ) encontrados += 1
+			if (c < 0 ) c += n;
+			if (c >= n) c -= n;
+			
+			if ( matriz[f][c] == ENCENDIDO ) encontrados += 1;
+			//printf("miro %d %d esta en %d\n",f,c,matriz[f][c]);
 		}
 		
-		return encontrados
+		return encontrados;
 }
-void recalcularMatriz(int** matriz, unsigned int filas, unsigned int columnas) {
+//devuelve la matriz nueva
+int** siguienteMatriz(int** matriz, unsigned int filas, unsigned int columnas) {
 	unsigned int f,c;
+	int** ret = inicializarMatriz(filas,columnas);
+	
 	for( f = 0; f < filas; f += 1 ){
-		for c = 0; c < columnas; c += 1 ){
+		for(c = 0; c < columnas; c += 1 ){
 			unsigned int vecs = vecinos(matriz,f,c,filas,columnas);
+			
+			printf("%d",vecs);
+			if(matriz[f][c] == APAGADO){
+				printf(" ");
+			}else{
+				printf("*");
+			}
+			
 			if( vecs < 2 || vecs > 3 ){
 				//si una celda tiene menos de dos o más de tres vecinos, 
 				//su siguiente estado es apagado
-				matriz[f][c] = APAGADO
-			}else if (matriz[f][c] == APAGADO && vecs == 3){
+				ret[f][c] = APAGADO;
+			}else if (vecs == 3){
 				//si una celda apagada tiene exactamente 3 vecin9os encendidos,
 				//su siguiente estado es encendido
-				matriz[f][c] = ENCENDIDO
+				ret[f][c] = ENCENDIDO;
+			}else if ( (vecs == 2 || vecs == 3) && matriz[f][c] == ENCENDIDO){
+				//si una celda encendida tiene dos o tres vecinos encendidos,
+				//su siguiente estado es encendido
+				ret[f][c] = ENCENDIDO;
+			}else{
+				ret[f][c] = APAGADO;//si no, está apagado
 			}
-			//si una celda encendida tiene dos o tres vecinos encendidos,
-			//su siguiente estado es encendido (no hace falta programar esto)
+			
+		}
+		printf("\n");
+	}
+	
+	return ret;
+}
+void grabarEstado(int** matriz, unsigned int filas, unsigned int columnas, char *nombreArchivo) {
+	FILE *archivo;
+	archivo = fopen(nombreArchivo,"w");
+	//escribo numero magico y whitespace
+	fprintf(archivo,"P4\n");
+	//escribo anchoalto
+	fprintf(archivo,"%d %d\n",columnas*8,filas*8);//ancho alto (8 pixel por casillero)
+	//rasters
+	unsigned int f,c,i;
+	for( f = 0; f < filas; f += 1){
+		for( i = 0; i < 8; i += 1){//esto es para repetir todo 8 veces
+			for( c = 0; c < columnas; c += 1){
+				if( matriz[f][c] == ENCENDIDO )
+					fprintf(archivo,"%c",0xFF);
+				else
+					fprintf(archivo,"%c",0x00);
+			}
 		}
 	}
+	fclose(archivo);
 }
 
-void grabarEstado(int** matriz, filas, columnas) {
-	//TODO PBM LIB
-}
-
-void avanzarEstados(int** matriz, unsigned int iteraciones, char* estado, unsigned int filas, unsigned int columnas) {
+void avanzarEstados(int** matrizInicial, unsigned int iteraciones, char* estado, unsigned int filas, unsigned int columnas) {
+	int** matrizActual = matrizInicial;
 	for(unsigned int i=0; i<iteraciones; i++) {
-		printf("Grabando %s_%d.pbm\n", estado, i+1);
-		grabarEstado(matriz, filas, columnas);
-		recalcularMatriz(matriz, filas, columnas);
+		//generar nombreArchivo
+		char nombreArchivo[200];
+		sprintf(nombreArchivo,"%s_%d.pbm",estado, i+1);
+		printf("Grabando %s\n", nombreArchivo);
+		
+		//guardar la matriz actual
+		grabarEstado(matrizActual, filas, columnas, nombreArchivo);
+		
+		//generar siguiente matriz
+		int** siguiente = siguienteMatriz(matrizActual, filas, columnas);
+		
+		//liberar la matriz actual
+		//liberarRecursos(matrizActual, filas);
+		if (matrizActual != matrizInicial){
+			liberarRecursos(matrizActual, filas);
+		}
+		
+		//cambiar la actual por la siguiente
+		matrizActual = siguiente;
+		
+	}
+	//liberarRecursos(matrizActual, filas);
+	
+	if (matrizActual != matrizInicial){
+		liberarRecursos(matrizActual, filas);
 	}
 	printf("Listo\n");
 }
@@ -157,9 +220,10 @@ void liberarRecursos(int** matriz, unsigned int filas) {
 }
 
 int main (int argc, char *argv[]) {
-	printf("hola!");
 	int **matriz;
 	int c;
+	int filas;
+	int columnas;
 	while (1) {
 		static struct option long_options[] = {
 				{"help", no_argument, 0, 'h'},
@@ -179,8 +243,8 @@ int main (int argc, char *argv[]) {
 				version();
 				break;
 			case 'o':
-				int filas = atoi(argv[2])
-				int columnas = atoi(argv[3])
+				filas  = atoi(argv[2]);
+				columnas  = atoi(argv[3]);
 				matriz = inicializarMatriz(filas, columnas);
 				if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
 					avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas);

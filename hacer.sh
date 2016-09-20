@@ -34,7 +34,7 @@ echo "$CC ${ARCHIVOS} -o $PROGRAMA"
 
 rm *.o
 
-./conway
+./conway 40 30 30 sapo -o estado
 
 echo "
 "
