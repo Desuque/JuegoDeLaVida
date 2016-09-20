@@ -48,7 +48,10 @@ bool infoValida(int fila, int columna, int tam_M, int tam_N) {
 	}
 	return true;
 }
-
+/**
+ * NOTA PARA LEANDRO: creo que con fscanf queda más lindo, 
+ * no me acuerdo ahora cómo se usaba, queda el tip (?)
+ * */
 int procesarArchivo(int** matriz, char* fileName, int tam_M, int tam_N) {
 	FILE *archivo;
 	char string[TAM_DATOS];
@@ -88,24 +91,57 @@ int** inicializarMatriz(unsigned int filas, unsigned int columnas) {
 	}
 	return matriz;
 }
-
-void recalcularMatriz(int** matriz) {
-	//TODO PEPENACHO
+unsigned int vecinos(int** matriz, 
+		unsigned int i, unsigned int j,
+		unsigned int m, unsigned int n){
+			
+		int	fOffsets[]={  1,  1,  1,  0, -1, -1, -1,  0};
+		int cOffsets[]={ -1,  0,  1,  1,  1,  0, -1, -1};
+		
+		unsigned int seleccionado;
+		unsigned int encontrados = 0;
+		
+		for( seleccionado = 0, seleccionado < 8, seleccionado += 1){
+			int f = fOffsets[seleccionado] + i;
+			int c = cOffsets[seleccionado] + j;
+			
+			if (f < 0 ) f += m
+			if (c < 0 ) c += n
+			
+			if ( matriz[f][c] == ENCENDIDO ) encontrados += 1
+		}
+		
+		return encontrados
+}
+void recalcularMatriz(int** matriz, unsigned int filas, unsigned int columnas) {
+	unsigned int f,c;
+	for( f = 0; f < filas; f += 1 ){
+		for c = 0; c < columnas; c += 1 ){
+			unsigned int vecs = vecinos(matriz,f,c,filas,columnas);
+			if( vecs < 2 || vecs > 3 ){
+				//si una celda tiene menos de dos o más de tres vecinos, 
+				//su siguiente estado es apagado
+				matriz[f][c] = APAGADO
+			}else if (matriz[f][c] == APAGADO && vecs == 3){
+				//si una celda apagada tiene exactamente 3 vecin9os encendidos,
+				//su siguiente estado es encendido
+				matriz[f][c] = ENCENDIDO
+			}
+			//si una celda encendida tiene dos o tres vecinos encendidos,
+			//su siguiente estado es encendido (no hace falta programar esto)
+		}
+	}
 }
 
-void grabarEstado(int** matriz) {
+void grabarEstado(int** matriz, filas, columnas) {
 	//TODO PBM LIB
 }
 
-//TODO IMPORTANTE!
-//Adentro de avanzarEstados hace falta crear
-//la funcion "vecinos()
-
-void avanzarEstados(int** matriz, unsigned int iteraciones, char* estado) {
+void avanzarEstados(int** matriz, unsigned int iteraciones, char* estado, unsigned int filas, unsigned int columnas) {
 	for(unsigned int i=0; i<iteraciones; i++) {
 		printf("Grabando %s_%d.pbm\n", estado, i+1);
-		grabarEstado(matriz);
-		recalcularMatriz(matriz);
+		grabarEstado(matriz, filas, columnas);
+		recalcularMatriz(matriz, filas, columnas);
 	}
 	printf("Listo\n");
 }
@@ -143,12 +179,13 @@ int main (int argc, char *argv[]) {
 				version();
 				break;
 			case 'o':
-				matriz = inicializarMatriz(atoi(argv[2]), atoi(argv[3]));
-				if (procesarArchivo(matriz, argv[4], atoi(argv[2]),
-						atoi(argv[3])) != -1) {
-					avanzarEstados(matriz, atoi(argv[1]), optarg);
+				int filas = atoi(argv[2])
+				int columnas = atoi(argv[3])
+				matriz = inicializarMatriz(filas, columnas);
+				if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
+					avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas);
 				}
-				liberarRecursos(matriz, atoi(argv[2]));
+				liberarRecursos(matriz, filas);
 				break;
 			case '?':
 				break;
