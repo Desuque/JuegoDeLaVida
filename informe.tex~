@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definición del tipo de documento.                                           %
+% Posibles tipos de papel: a4paper, letterpaper, legalpapper                  %
+% Posibles tamaños de letra: 10pt, 11pt, 12pt                                 %
+% Posibles clases de documentos: article, report, book, slides                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper,10pt]{article}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Los paquetes permiten ampliar las capacidades de LaTeX.                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Paquete para inclusión de gráficos.
+\usepackage{graphicx}
+
+% Paquete para definir la codificación del conjunto de caracteres usado
+% (latin1 es ISO 8859-1).
+\usepackage[latin1]{inputenc}
+
+% Paquete para definir el idioma usado.
+\usepackage[spanish]{babel}
+
+
+% Título principal del documento.
+%\title{		\textbf{Trabajo Práctico 1: Juego de la vida}}
+
+% Información sobre los autores.
+%\author{	José Ignacio Sbruzzi, \textit{Padrón Nro. 97.452}                     \\
+ %           \texttt{ mail }                                              \\
+  %          Leandro Huemul Desuque, \textit{Padrón Nro. xx.xxx}                     \\
+   %         \texttt{ dirección de e-mail }                                              \\[2.5ex]
+    %        \normalsize{Grupo Nro. 74 - 2do. Cuatrimestre de 2016}                       \\
+     %       \normalsize{66.20 Organización de Computadoras}                             \\
+      %      \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
+%       }
+%\date{Septiembre 2016}
+
+\begin{document}
+
+% Inserta el título.
+\maketitle
+
+% Quita el número en la primer página.
+\thispagestyle{empty}
+
+% Resumen
+%HACERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+\begin{abstract}
+Este artículo es un modelo que proporciona a los alumnos las instrucciones necesarias para preparar sus informes para la asignatura \textit{66.20 Organización de Computadoras}. El informe deberá contener un resumen de no más de 150 palabras. La primera página del artículo deberá seguir el formato que se ilustra en el presente modelo y deberá contener el título, los nombres de los autores, sus números de padrón, sus direcciones de e-mail, número de grupo y el resumen. La primera página del informe no debe ser numerada.
+\end{abstract}
+
+
+\section{Introducción}
+Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en assemly MIPS.
+El objetivo del presente trabajo fue principalmente familiarizarse con el entorno GXEmul y con LaTeX.
+
+El Juego de la vida es...
+GXEmul es...
+% \textit{66.20 Organización de Computadoras} ESTO PONE TEXTO EN CURSIVA
+\section{desarrollo}
+\subsection{Documentación del código C}
+\subsection{Documentación del código assembly}
+\subsection{Dificultades}
+La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
+
+\section{Resultados}
+
+\subsection{Corridas de prueba}
+A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como pedido.
+\subsubsection{Glider}
+Glider es una configuración del autómata que se mueve por la pantalla sin destruirse: atravieza un ciclo de cuatro estados, al cabo de los cuales regresa a la configuración inicial, pero esta se encuentra desplazada.
+La configuración inicial del glider es la siguiente:
+
+%\begin{figure}[!htp]
+%\begin{center}
+%\includegraphics[width=0.5\textwidth]{imagenes\_informe/glider\_salida\_1.pbm}
+%\end{center}
+%\caption{Estado inicial descripto en el archivo glider} \label{glider\_inicial}
+%\end{figure}
+
+A continuación se muestran las iteraciones 1 a 4.
+
+%\begin{figure}[!htp]
+%\begin{center}
+%\includegraphics[width=0.5\textwidth]{fig001.eps}
+%\end{center}
+%\caption{Facultad de Ingeniería $-$ Universidad de Buenos Aires.} \label{fig001}
+%\end{figure}
+
+%\section{Este es el Título de una Sección}
+%
+%En la tabla~\ref{tab001} se muestra un ejemplo de cómo se insertan las mismas en un documento \TeX{} / \LaTeX{}.
+%
+% Inclusión de una tabla de 3x3.
+%\begin{table}[!htp]
+%\begin{center}
+%\begin{tabular}{|r|r|r|}
+%\hline
+% Columna 1 &  Columna 2 &  Columna 3 \\
+%\hline
+%           &            &            \\
+%\hline
+%           &            &            \\
+%\hline
+%\end{tabular}
+%\caption{Ejemplo de tabla.} \label{tab001}
+%\end{center}
+%\end{table}
+
+
+%\subsection{Este es el Título de una Subsección}
+%
+%Texto de la subsección...
+%
+%
+%\section{Este es el Título de Otra Sección}
+%
+%Texto de la otra sección. En la figura~\ref{fig001} se muestra un ejemplo de cómo presentar las ilustraciones del informe.
+%
+% Inclusión de una imagen en formato EPS (Encapsulated Postscript).
+%\begin{figure}[!htp]
+%\begin{center}
+%\includegraphics[width=0.5\textwidth]{fig001.eps}
+%\end{center}
+%\caption{Facultad de Ingeniería $-$ Universidad de Buenos Aires.} \label{fig001}
+%\end{figure}
+
+
+\section{Conclusiones}
+
+Se presentó un modelo para que los alumnos puedan tomar como referencia en la redacción de sus informes de trabajos prácticos.
+
+
+% Citas bibliográficas.
+\begin{thebibliography}{99}
+
+\bibitem{INT06} Intel Technology \& Research, ``Hyper-Threading Technology,'' 2006, http://www.intel.com/technology/hyperthread/.
+
+\bibitem{HEN00} J. L. Hennessy and D. A. Patterson, ``Computer Architecture. A Quantitative
+Approach,'' 3ra Edición, Morgan Kaufmann Publishers, 2000.
+
+\bibitem{LAR92} J. Larus and T. Ball, ``Rewriting Executable Files to Mesure Program Behavior,'' Tech. Report 1083, Univ. of Wisconsin, 1992.
+
+\end{thebibliography}
+
+\end{document}
