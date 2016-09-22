@@ -1,0 +1,144 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definición del tipo de documento.                                           %
+% Posibles tipos de papel: a4paper, letterpaper, legalpapper                  %
+% Posibles tamaños de letra: 10pt, 11pt, 12pt                                 %
+% Posibles clases de documentos: article, report, book, slides                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper,10pt]{article}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Los paquetes permiten ampliar las capacidades de LaTeX.                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Paquete para inclusión de gráficos.
+\usepackage{graphicx}
+
+% Paquete para definir la codificación del conjunto de caracteres usado
+% (latin1 es ISO 8859-1).
+\usepackage[latin1]{inputenc}
+
+% Paquete para definir el idioma usado.
+\usepackage[spanish]{babel}
+
+
+% Título principal del documento.
+\title{		\textbf{Un Modelo de Referencia para la Generación de Informes}}
+
+% Información sobre los autores.
+\author{	José Ignacio Sbruzzi, \textit{Padrón Nro. 97.452}                     \\
+            \texttt{ jose\_sbruzzi@hotmail.com }                                              \\
+            Leandro Huemul Desuque, \textit{Padrón Nro. 00.000}                     \\
+            \texttt{ dirección de e-mail }                                              \\
+            Nombre y Apellido de Autor, \textit{Padrón Nro. 00.000}                     \\
+            \texttt{ dirección de e-mail }                                              \\
+            Nombre y Apellido de Autor, \textit{Padrón Nro. 00.000}                     \\
+            \texttt{ dirección de e-mail }                                              \\[2.5ex]
+            \normalsize{Grupo Nro. 0 - 2do. Cuatrimestre de 2006}                       \\
+            \normalsize{66.20 Organización de Computadoras}                             \\
+            \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
+       }
+\date{}
+
+
+
+\begin{document}
+
+% Inserta el título.
+\maketitle
+
+% Quita el número en la primer página.
+\thispagestyle{empty}
+
+% Resumen
+\begin{abstract}
+Este artículo es un modelo que proporciona a los alumnos las instrucciones necesarias para preparar sus informes para la asignatura \textit{66.20 Organización de Computadoras}. El informe deberá contener un resumen de no más de 150 palabras. La primera página del artículo deberá seguir el formato que se ilustra en el presente modelo y deberá contener el título, los nombres de los autores, sus números de padrón, sus direcciones de e-mail, número de grupo y el resumen. La primera página del informe no debe ser numerada.
+\end{abstract}
+
+
+\section{Introducción}
+
+Este artículo es un modelo que proporciona a los alumnos las instrucciones necesarias para preparar sus informes para la asignatura \textit{66.20 Organización de Computadoras}. Además de la estructura presentada, el informe podría contener otras secciones y subsecciones, a continuación de la introducción. Podrá  incluir (se recomienda) gráficos ilustrativos y/o tablas. El informe finaliza con una sección de conclusiones, y las citas bibliográficas consultadas siguiendo, rigurosamente, el formato presentado al final de este modelo. También se recomienda respectar el estilo tipográfico mostrado aquí (fuente Times Roman de 10 puntos, u otras similares)
+
+\section{Introducción}
+Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en assemly MIPS.
+El objetivo del presente trabajo fue principalmente familiarizarse con el entorno GXEmul y con LaTeX.
+
+El Juego de la vida es...
+GXEmul es...
+% \textit{66.20 Organización de Computadoras} ESTO PONE TEXTO EN CURSIVA
+\section{desarrollo}
+\subsection{Documentación del código C}
+\subsection{Documentación del código assembly}
+\subsection{Dificultades}
+La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
+
+\section{Resultados}
+\subsection{Medidas de tiempo de ejecución}
+\subsection{Corridas de prueba}
+A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como pedido.
+
+\subsubsection{Glider}
+Glider es una configuración del autómata que se mueve por la pantalla sin destruirse: atravieza un ciclo de cuatro estados, al cabo de los cuales regresa a la configuración inicial, pero desplazada.
+En la figura~\ref{todosGlider} se muestra la configuración inicial del glider junto con 10 iteraciones. El glider se mueve, en cada ciclo, una celda hacia abajo y una celda a la derecha, como puede notarse en la figura~\ref{todosGlider}.
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/todosGlider.eps}
+\end{center}
+\caption{Desde la esquina izquierda superior: 1:Estado inicial descripto en el archivo glider. 2 a 11: Iteraciones 1 a 10} \label{todosGlider}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/movtoGlider.eps}
+\end{center}
+\caption{El movimiento del glider: se superponen la iteración 4 y 8} \label{movtoGlider}
+\end{figure}
+
+\subsubsection{Pento}
+Pento es un patrón que se estabiliza luego de cierta cantidad de iteraciones. El resultado final varía según el tamaño de la matriz. Para una matriz de 20 por 20, se muestra la configuración inicial, las primeras 10 iteraciones y el resultado final estable, alcanzado en la iteración 60, en la figura~\ref{todosPento}.
+En la imagen~\ref{final30x30pento} puede verse la configuración final de Pento para una matriz de otro tamaño.
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/todosPento.eps}
+\end{center}
+\caption{Desde la esquina superior izquierda: 1: estado inicial de Pento, 2 a 11: primeras 10 iteraciones, 12: estado final luego de 60 iteraciones. El tamaño de la matriz es 20x20} \label{todosPento}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/final30x30pento.eps}
+\end{center}
+\caption{La configuración final de Pento en una matriz de 30 por 30.} \label{final30x30pento}
+\end{figure}
+
+\subsubsection{Sapo}
+El patrón Sapo, al igual que Glider, atravieza un ciclo, pero de 2 estados (no de 4), y no se desplaza. En la figura~\ref{todosSapo} se muestran el estado inicial y cuatro iteraciones de Sapo. No se muestran más iteraciones porque los estados se repiten constantemente.
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/todosSapo.eps}
+\end{center}
+\caption{La configuración final de Pento en una matriz de 30 por 30.} \label{todosSapo}
+\end{figure}
+
+\section{Conclusiones}
+
+Se presentó un modelo para que los alumnos puedan tomar como referencia en la redacción de sus informes de trabajos prácticos.
+
+
+% Citas bibliográficas.
+\begin{thebibliography}{99}
+
+\bibitem{INT06} Intel Technology \& Research, ``Hyper-Threading Technology,'' 2006, http://www.intel.com/technology/hyperthread/.
+
+\bibitem{HEN00} J. L. Hennessy and D. A. Patterson, ``Computer Architecture. A Quantitative
+Approach,'' 3ra Edición, Morgan Kaufmann Publishers, 2000.
+
+\bibitem{LAR92} J. Larus and T. Ball, ``Rewriting Executable Files to Mesure Program Behavior,'' Tech. Report 1083, Univ. of Wisconsin, 1992.
+
+\end{thebibliography}
+
+\end{document}
