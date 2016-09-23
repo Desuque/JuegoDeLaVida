@@ -4,7 +4,6 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include "pbmlib.h"
-#include <time.h>
 
 #define TAM_DATOS 5
 #define ENCENDIDO 1
@@ -32,14 +31,20 @@ void help() {
 
 void version() {
 	printf("El Juego de la Vida - Version 0.1\n");
-	printf("Programado para IBM por Leandro Desuque y Pepenacho.\n");
-	printf("Todos los derechos reservados, el logo de PlayStation"
-			"y el de Coca-Cola aparecen por cortesia de"
-			"Microsoft.");
+	printf("Organizacion del computador, FIUBA.\n");
 }
 
-void cargarMatriz(int** matriz, int fila, int columna) {
-	matriz[fila][columna] = ENCENDIDO;
+unsigned int getPosicion(unsigned int i, unsigned int j,
+		unsigned int tam_M) {
+	/**
+	 * Me posiciono en el inicio de la fila, y luego
+	 * avanzo las posiciones necesarias
+	 */
+	return ((tam_M*j)-j)+i;
+}
+
+void cargarMatriz(char* matriz, unsigned int posicion) {
+	matriz[posicion] = ENCENDIDO;
 }
 
 bool infoValida(int fila, int columna, int tam_M, int tam_N) {
@@ -49,11 +54,13 @@ bool infoValida(int fila, int columna, int tam_M, int tam_N) {
 	}
 	return true;
 }
+
 /**
  * NOTA PARA LEANDRO: creo que con fscanf queda más lindo, 
  * no me acuerdo ahora cómo se usaba, queda el tip (?)
  * */
-int procesarArchivo(int** matriz, char* fileName, int tam_M, int tam_N) {
+int procesarArchivo(char* matriz, char* fileName, unsigned int tam_M,
+		unsigned int tam_N) {
 	FILE *archivo;
 	char string[TAM_DATOS];
   	memset(&string[0], 0, TAM_DATOS);
@@ -66,7 +73,8 @@ int procesarArchivo(int** matriz, char* fileName, int tam_M, int tam_N) {
 			unsigned int fila = atoi(&string[0]);
 			unsigned int columna = atoi(&string[2]);
 			if (infoValida(fila, columna, tam_M, tam_N)) {
-				cargarMatriz(matriz, fila, columna);
+				unsigned int posicion = getPosicion(fila, columna, tam_M);
+				cargarMatriz(matriz, posicion);
 			} else {
 				return -1;
 			}
@@ -80,25 +88,22 @@ int procesarArchivo(int** matriz, char* fileName, int tam_M, int tam_N) {
  * Asigno memoria dinamica para la matriz de datos
  * y dejo todos los casilleros marcados como APAGADOS
  */
-int** inicializarMatriz(unsigned int filas, unsigned int columnas) {
-	int **matriz = (int **)malloc(filas * sizeof(int*));
-	for (unsigned int i=0; i<filas; i++) {
-		matriz[i] = (int *)malloc(columnas * sizeof(int));
-	}
-	for(unsigned int i=0; i<filas; i++) {
-		for(unsigned int j=0; j<columnas; j++) {
-			matriz[i][j] = APAGADO;
-		}
+char* inicializarMatriz(unsigned int filas, unsigned int columnas) {
+	char *matriz = (char*)malloc(sizeof(char)*filas*columnas + 1);
+	int tamTotal = filas * columnas;
+	for(unsigned int i=0; i<tamTotal; i++) {
+			matriz[i] = APAGADO;
 	}
 	return matriz;
 }
-unsigned int vecinos(int** matriz, 
+
+unsigned int vecinos(char* matriz,
 		unsigned int i, unsigned int j,
 		unsigned int m, unsigned int n){
 			
 		int	fOffsets[]={  1,  1,  1,  0, -1, -1, -1,  0};
 		int cOffsets[]={ -1,  0,  1,  1,  1,  0, -1, -1};
-		
+
 		unsigned int seleccionado;
 		unsigned int encontrados = 0;
 		//printf("Estoy parado en %d %d\n",i,j);
@@ -111,24 +116,27 @@ unsigned int vecinos(int** matriz,
 			
 			if (c < 0 ) c += n;
 			if (c >= n) c -= n;
-			
-			if ( matriz[f][c] == ENCENDIDO ) encontrados += 1;
+
+			unsigned int posicion = getPosicion(f, c, m);
+			if ( matriz[posicion] == ENCENDIDO ) encontrados += 1;
 			//printf("miro %d %d esta en %d\n",f,c,matriz[f][c]);
 		}
 		
 		return encontrados;
 }
+
 //devuelve la matriz nueva
-int** siguienteMatriz(int** matriz, unsigned int filas, unsigned int columnas) {
+char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas) {
 	unsigned int f,c;
-	int** ret = inicializarMatriz(filas,columnas);
+	char* ret = inicializarMatriz(filas, columnas);
 	
 	for( f = 0; f < filas; f += 1 ){
 		for(c = 0; c < columnas; c += 1 ){
-			unsigned int vecs = vecinos(matriz,f,c,filas,columnas);
+			unsigned int pos = getPosicion(f,c, columnas);
+			unsigned int vecs = vecinos(matriz, f, c, filas, columnas);
 			
 			printf("%d",vecs);
-			if(matriz[f][c] == APAGADO){
+			if(matriz[pos] == APAGADO){
 				printf(" ");
 			}else{
 				printf("*");
@@ -137,26 +145,27 @@ int** siguienteMatriz(int** matriz, unsigned int filas, unsigned int columnas) {
 			if( vecs < 2 || vecs > 3 ){
 				//si una celda tiene menos de dos o más de tres vecinos, 
 				//su siguiente estado es apagado
-				ret[f][c] = APAGADO;
+				ret[pos] = APAGADO;
 			}else if (vecs == 3){
 				//si una celda apagada tiene exactamente 3 vecin9os encendidos,
 				//su siguiente estado es encendido
-				ret[f][c] = ENCENDIDO;
-			}else if ( (vecs == 2 || vecs == 3) && matriz[f][c] == ENCENDIDO){
+				ret[pos] = ENCENDIDO;
+			}else if ( (vecs == 2 || vecs == 3) && matriz[pos] == ENCENDIDO){
 				//si una celda encendida tiene dos o tres vecinos encendidos,
 				//su siguiente estado es encendido
-				ret[f][c] = ENCENDIDO;
+				ret[pos] = ENCENDIDO;
 			}else{
-				ret[f][c] = APAGADO;//si no, está apagado
+				ret[pos] = APAGADO;//si no, está apagado
 			}
 			
 		}
 		printf("\n");
 	}
-	
 	return ret;
 }
-void grabarEstado(int** matriz, unsigned int filas, unsigned int columnas, char *nombreArchivo) {
+
+void grabarEstado(char* matriz, unsigned int filas, unsigned int columnas,
+		char *nombreArchivo) {
 	FILE *archivo;
 	archivo = fopen(nombreArchivo,"w");
 	//escribo numero magico y whitespace
@@ -166,9 +175,10 @@ void grabarEstado(int** matriz, unsigned int filas, unsigned int columnas, char 
 	//rasters
 	unsigned int f,c,i;
 	for( f = 0; f < filas; f += 1){
-		for( i = 0; i < 8; i += 1){//repetir todo 8 veces así quedan cuadrados en vez de filitas
+		for( i = 0; i < 8; i += 1){//esto es para repetir todo 8 veces
 			for( c = 0; c < columnas; c += 1){
-				if( matriz[f][c] == ENCENDIDO )
+				unsigned int posicion = getPosicion(f, c, columnas);
+				if( matriz[posicion] == ENCENDIDO )
 					fprintf(archivo,"%c",0xFF);
 				else
 					fprintf(archivo,"%c",0x00);
@@ -178,50 +188,45 @@ void grabarEstado(int** matriz, unsigned int filas, unsigned int columnas, char 
 	fclose(archivo);
 }
 
-void avanzarEstados(int** matrizInicial, unsigned int iteraciones, char* estado, unsigned int filas, unsigned int columnas) {
-	int** matrizActual = matrizInicial;
+void liberarRecursos(char* matriz) {
+	/**
+	* Libero la memoria utilizada por la matriz
+	*/
+	free(matriz);
+}
+
+void avanzarEstados(char* matrizInicial, unsigned int iteraciones,
+		char* estado, unsigned int filas, unsigned int columnas) {
+	char* matrizActual = matrizInicial;
 	for(unsigned int i=0; i<iteraciones; i++) {
 		//generar nombreArchivo
 		char nombreArchivo[200];
 		sprintf(nombreArchivo,"%s_%d.pbm",estado, i+1);
 		printf("Grabando %s\n", nombreArchivo);
-		
 		//guardar la matriz actual
 		grabarEstado(matrizActual, filas, columnas, nombreArchivo);
 		
 		//generar siguiente matriz
-		int** siguiente = siguienteMatriz(matrizActual, filas, columnas);
+		char* siguiente = siguienteMatriz(matrizActual, filas, columnas);
 		
 		//liberar la matriz actual
 		//liberarRecursos(matrizActual, filas);
 		if (matrizActual != matrizInicial){
-			liberarRecursos(matrizActual, filas);
+			liberarRecursos(matrizActual);
 		}
-		
 		//cambiar la actual por la siguiente
 		matrizActual = siguiente;
-		
 	}
 	//liberarRecursos(matrizActual, filas);
 	
 	if (matrizActual != matrizInicial){
-		liberarRecursos(matrizActual, filas);
+		liberarRecursos(matrizActual);
 	}
 	printf("Listo\n");
 }
 
-void liberarRecursos(int** matriz, unsigned int filas) {
-	/**
-	* Libero la memoria utilizada por la matriz
-	*/
-	for (unsigned int i=0; i<filas; i++) {
-		free(matriz[i]);
-	}
-	free(matriz);
-}
-
 int main (int argc, char *argv[]) {
-	int **matriz;
+	char *matriz;
 	int c;
 	int filas;
 	int columnas;
@@ -247,16 +252,10 @@ int main (int argc, char *argv[]) {
 				filas  = atoi(argv[2]);
 				columnas  = atoi(argv[3]);
 				matriz = inicializarMatriz(filas, columnas);
-				
-				clock_t inicio = clock()
 				if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
 					avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas);
 				}
-				clock_t fin = clock();
-				clock_t clocks = fin-inicio;
-				printf("El programa ha tomado %d ciclos de clock segun clock() .",clocks);
-
-				liberarRecursos(matriz, filas);
+				liberarRecursos(matriz);
 				break;
 			case '?':
 				break;
