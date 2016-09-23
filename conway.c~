@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include "pbmlib.h"
+#include <time.h>
 
 #define TAM_DATOS 5
 #define ENCENDIDO 1
@@ -165,7 +166,7 @@ void grabarEstado(int** matriz, unsigned int filas, unsigned int columnas, char 
 	//rasters
 	unsigned int f,c,i;
 	for( f = 0; f < filas; f += 1){
-		for( i = 0; i < 8; i += 1){//esto es para repetir todo 8 veces y quedan cuadrados en vez de filitas
+		for( i = 0; i < 8; i += 1){//repetir todo 8 veces así quedan cuadrados en vez de filitas
 			for( c = 0; c < columnas; c += 1){
 				if( matriz[f][c] == ENCENDIDO )
 					fprintf(archivo,"%c",0xFF);
@@ -246,9 +247,15 @@ int main (int argc, char *argv[]) {
 				filas  = atoi(argv[2]);
 				columnas  = atoi(argv[3]);
 				matriz = inicializarMatriz(filas, columnas);
+				
+				clock_t inicio = clock()
 				if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
 					avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas);
 				}
+				clock_t fin = clock();
+				clock_t clocks = fin-inicio;
+				printf("El programa ha tomado %d ciclos de clock segun time.h .",clocks);
+
 				liberarRecursos(matriz, filas);
 				break;
 			case '?':

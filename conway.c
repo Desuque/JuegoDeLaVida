@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include "pbmlib.h"
+#include <time.h>
 
 #define TAM_DATOS 5
 #define ENCENDIDO 1
@@ -246,9 +247,15 @@ int main (int argc, char *argv[]) {
 				filas  = atoi(argv[2]);
 				columnas  = atoi(argv[3]);
 				matriz = inicializarMatriz(filas, columnas);
+				
+				clock_t inicio = clock()
 				if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
 					avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas);
 				}
+				clock_t fin = clock();
+				clock_t clocks = fin-inicio;
+				printf("El programa ha tomado %d ciclos de clock segun clock() .",clocks);
+
 				liberarRecursos(matriz, filas);
 				break;
 			case '?':
