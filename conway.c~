@@ -165,7 +165,7 @@ void grabarEstado(int** matriz, unsigned int filas, unsigned int columnas, char 
 	//rasters
 	unsigned int f,c,i;
 	for( f = 0; f < filas; f += 1){
-		for( i = 0; i < 8; i += 1){//repetir todo 8 veces así quedan cuadrados en vez de filitas
+		for( i = 0; i < 8; i += 1){//esto es para repetir todo 8 veces y quedan cuadrados en vez de filitas
 			for( c = 0; c < columnas; c += 1){
 				if( matriz[f][c] == ENCENDIDO )
 					fprintf(archivo,"%c",0xFF);
