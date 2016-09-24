@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include "pbmlib.h"
+#include "vecinos.h"
 
 #define TAM_DATOS 5
 #define ENCENDIDO 1
@@ -55,10 +56,6 @@ bool infoValida(int fila, int columna, int tam_M, int tam_N) {
 	return true;
 }
 
-/**
- * NOTA PARA LEANDRO: creo que con fscanf queda más lindo, 
- * no me acuerdo ahora cómo se usaba, queda el tip (?)
- * */
 int procesarArchivo(char* matriz, char* fileName, unsigned int tam_M,
 		unsigned int tam_N) {
 	FILE *archivo;
@@ -97,34 +94,6 @@ char* inicializarMatriz(unsigned int filas, unsigned int columnas) {
 	return matriz;
 }
 
-unsigned int vecinos(char* matriz,
-		unsigned int i, unsigned int j,
-		unsigned int m, unsigned int n){
-			
-		int	fOffsets[]={  1,  1,  1,  0, -1, -1, -1,  0};
-		int cOffsets[]={ -1,  0,  1,  1,  1,  0, -1, -1};
-
-		unsigned int seleccionado;
-		unsigned int encontrados = 0;
-		//printf("Estoy parado en %d %d\n",i,j);
-		for( seleccionado = 0; seleccionado < 8; seleccionado += 1){
-			int f = fOffsets[seleccionado] + i;
-			int c = cOffsets[seleccionado] + j;
-			
-			if (f < 0 ) f += m;
-			if (f >= m) f -= m;
-			
-			if (c < 0 ) c += n;
-			if (c >= n) c -= n;
-
-			unsigned int posicion = getPosicion(f, c, m);
-			if ( matriz[posicion] == ENCENDIDO ) encontrados += 1;
-			//printf("miro %d %d esta en %d\n",f,c,matriz[f][c]);
-		}
-		
-		return encontrados;
-}
-
 //devuelve la matriz nueva
 char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas) {
 	unsigned int f,c;
@@ -133,7 +102,9 @@ char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas) {
 	for( f = 0; f < filas; f += 1 ){
 		for(c = 0; c < columnas; c += 1 ){
 			unsigned int pos = getPosicion(f,c, columnas);
-			unsigned int vecs = vecinos(matriz, f, c, filas, columnas);
+			//unsigned int vecs = vecinos(matriz, f, c, filas, columnas);
+
+			unsigned int vecs = vecinos_s(matriz, f, c, filas, columnas);
 			
 			printf("%d",vecs);
 			if(matriz[pos] == APAGADO){

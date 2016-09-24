@@ -52,36 +52,25 @@
 
 % Resumen
 \begin{abstract}
-Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en assemly MIPS.
-El objetivo del presente trabajo fue además familiarizarse con el entorno GXEmul y con LaTeX.
+HACERRRRRRRRR
+Este artículo es un modelo que proporciona a los alumnos las instrucciones necesarias para preparar sus informes para la asignatura \textit{66.20 Organización de Computadoras}. El informe deberá contener un resumen de no más de 150 palabras. La primera página del artículo deberá seguir el formato que se ilustra en el presente modelo y deberá contener el título, los nombres de los autores, sus números de padrón, sus direcciones de e-mail, número de grupo y el resumen. La primera página del informe no debe ser numerada.
 \end{abstract}
 
 \section{Introducción}
-Inicialmente, se implementó en C el Juego de la Vida de Conway. El Juego de la Vida es un autómata celular descripto por John Conway en 1970 ~\ref{Conway}. Inicialmente fue publicado como un juego matemático recreacional. El juego es "de cero jugadores" en el sentido de que no es necesario propiamente jugar, sino que lo único que hace el jugador es decidir la configuración inicial y observar cómo evoluciona el sistema. Se rige por reglas sencillas: las células nacen, sobreviven o mueren dependiendo de la cantidad de vecinos vivos que tienen, tal como descripto en el enunciado de este trabajo práctico. Así, es un sistema simple, y una buena elección si el objetivo final no es construir un sistema elaborado sino familiarizarse con el software necesario para ello.
+Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en assemly MIPS.
+El objetivo del presente trabajo fue principalmente familiarizarse con el entorno GXEmul y con LaTeX.%epa, creo que esta cosa cortita iría en abstract
 
-Posteriormente, se reprogramó una parte del programa en assembly MIPS, para esto se utilizó el emulador GXEmul. GXEmul emula arquitecturas de computadoras y permite correr sistemas operativos sobre ellos~\ref{GXemul}. De esta manera, se compiló y se corrió el programa en assembly MIPS pese a no disponer de un equipo MIPS.
+El Juego de la vida es...
+GXEmul es...
 % \textit{66.20 Organización de Computadoras} ESTO PONE TEXTO EN CURSIVA
-
 \section{desarrollo}
 \subsection{Documentación del código C}
-
-\subsubsection{\texttt{vecinos}}
-\texttt{vecinos} es una función que, a partir de la matriz y de una celda, determina cuántos vecinos vivos (es decir, casilleros ocupados) tiene una celda. De esta manera, la función \texttt{siguienteMatriz} puede definir dónde suceden nacimientos, muertes y supervivencias.
-\subsubsection{\texttt{siguienteMatriz}}
-\texttt{siguienteMatriz} genera, a partir de una matriz (es decir, un estado), la matriz que le sigue, según las reglas del juego.
-
-\subsubsection{\texttt{El resto acá...}}
-asdasd
-
 \subsection{Documentación del código assembly}
-...
-
 \subsection{Dificultades}
 La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
 
 \section{Resultados}
 \subsection{Medidas de tiempo de ejecución}
-
 \subsection{Corridas de prueba}
 A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como pedido.
 
@@ -145,10 +134,6 @@ Se presentó un modelo para que los alumnos puedan tomar como referencia en la re
 Approach,'' 3ra Edición, Morgan Kaufmann Publishers, 2000.
 
 \bibitem{LAR92} J. Larus and T. Ball, ``Rewriting Executable Files to Mesure Program Behavior,'' Tech. Report 1083, Univ. of Wisconsin, 1992.
-
-\bibitem{Conway} Gardner, Martin. ``Mathematical Games - The fantastic combinations of John Conway's new solitaire game "life" '' Scientific America, 223. pp. 120-123. ISBN 0-89454-001-7. Archivado del original en https://web.archive.org/web/20090603015231/http://ddi.cs.uni-potsdam.de/HyFISCH/Produzieren/lis_projekt/proj_gamelife/ConwayScientificAmerican.htm . Consultado en septiembre 2016.
-
-\bibitem{GXemul} Sitio web de GXemul http://gxemul.sourceforge.net/ . Consultado en septiembre 2016.
 
 \end{thebibliography}
 
