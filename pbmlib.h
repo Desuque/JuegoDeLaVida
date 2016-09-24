@@ -1,5 +1,3 @@
-/*  pbmpak.h  21 June 1999 */
-
 void bitchr75 ( char c, int *pattern );
 
 int  pbm_check_data ( int xsize, int ysize, int *barray );
