@@ -1,2 +1,2 @@
 # JuegoDeLaVida
-[66.20 Organización del Computador] Juego de la Vida
+[66.20 Organización de Computadoras] Juego de la Vida
