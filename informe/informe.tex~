@@ -71,15 +71,12 @@ asdasd
 
 \subsection{Documentación del código assembly}
 ...
-LEANDRO acordate del coso del stack, revoleame un png y yo lo enchufo bien acá
 
 \subsection{Dificultades}
 La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
 
 \section{Resultados}
 \subsection{Medidas de tiempo de ejecución}
-HACERRR
-acá tenes que anteponer time a la corrida de conway y linux te toma cuánto tardan las cosas, fijate cuánto cambia con el .S y sin el .S y listo, 3 líneas
 
 \subsection{Corridas de prueba}
 A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como pedido.
