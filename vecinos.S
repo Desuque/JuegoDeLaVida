@@ -1,81 +1,97 @@
 #include <mips/regdef.h>
-	.data			#Reservo memoria para los offset
-	fOffset: .byte 1, 1, 1, 0, -1, -1, -1, 0
-	cOffset: .byte -1, 0, 1, 1, 1, 0, -1, -1
+	.data #Reservo memoria para los offset
+	fOffset: .word 1, 1, 1, 0, -1, -1, -1, 0
+	cOffset: .word -1, 0, 1, 1, 1, 0, -1, -1
 	.text
 	.align 2
+	.globl	vecinos_s
+	.ent	vecinos_s
+	.frame	$fp,24,ra
+	.set	noreorder
+	.set	reorder
 
 /***
 unsigned int vecinos(unsigned char* matriz,
 		unsigned int i, unsigned int j,
 		unsigned int m, unsigned int n){
+
+Nota: Como la matriz es cuadrada, no se usa el ultimo argumento
+
 ***/ 
 
-// a1 = *matriz[0][0]
-// a2 = i (fila)
-// a3 = j (columna)
-// a4 = m (tam_fila)
-// (en la pila) = n (tam_columna) No se usa, ya que la matriz es cuadrada 
+vecinos_s:
+	subu	sp, sp, 24 	#Expando el stack (5 argumentos + stack)
+   	sw ra, 0(sp)	//ra en stack
+	sw a0, 4(sp)	//*matriz[0][0]
+	sw a1, 8(sp)	//i (fila)
+	sw a2, 12(sp)	//j (columna)
+	sw a3, 16(sp)	//m (tam_fila)
 
-/***
-En realidad los parametros los tengo que
-pasar a registros temporales
-ver despues
-***/
-
-vecinos_s: .ent vecinos_s
-	li t0, 0			#load inmediate
-	li t6, 0			#encontrados = 0
-	la t1, fOffset 		#apunta a la direccion del primer elemento de fOffset
-	la t2, cOffset		
+	li t0, 0			#Inicializo el flag del loop
+	li t7, 0			#Inicializo vecinos
+	la s0, fOffset		#Cargo la direccion del primer elemento en s0
+	la s1, cOffset		#Cargo la direccion del primer elemento en s1
 
 loop:
-	bge t0, 8, salir		#branch on greater than equal
-	addu t0, t0, 1
-	lh s0, 0(t1) 			#carga el 1er elemento del vector fOffset en s0
-	addu t3, s0, a2		#int f = fOffsets[seleccionado] + i;
-	lh s1, 0(t2)			#carga el 1er elemento del vector cOffset en s1
-	addu t4, s1, a3		#int c = cOffsets[seleccionado] + j;
+	lw t3, 0(s0)		#Cargo el 1er elemento del vector fOffset en t3
+	addu t3, t3, a1		#int f = fOffsets[seleccionado] + i;
+	lw t4, 0(s1)		#carga el 1er elemento del vector cOffset en t4
+	addu t4, t4, a2		#int c = cOffsets[seleccionado] + j;
 
-	
-	blt t3, zero, suma_fila	//if (f < 0 ) f += m;
-	bge t3, a4, resta_fila	//if (f >= m) f -= m;
-	blt t4, zero, suma_col	
-	blt t4, a4, resta_col		#la matriz es cuadrada por definicion (uso $a4)
+suma_f:
+	blt t3, zero, suma_fila
+	j resta_f
 
-	mulou t5, a4, t4		# m*c
-	subu t5, t5, t4		# (m*c)-c
-	addu t5, t5, t3		# ((m*c)-c) + f
-
-	lh s2, t5(a1)		#carga el elemento t5 de la matriz en s2
-	beq s2, 1, encontrados		#matriz[posicion] == 1
-
-	blt t0, 5, loop 		#branch less than
-	j salir
-
-encontrados:
-	addu t6, $t6, 1		#encontrados + 1
-	j loop
-	
 suma_fila:
-	addu t3, t3, a4		#fila = fila + m
-	j loop
+	add t3, t3, a3		#fila = fila + m
 
-resta_fila
-	subu t3, t3, a4		#fila = fila - m
-	j loop
+resta_f:
+	slt t6, t3, a3
+	beq t6, zero, resta_fila
+	j suma_c
+
+resta_fila:
+	subu t3, t3, a3		#fila = fila - m
+
+suma_c:
+	blt t4, zero, suma_col
+	j resta_c
 
 suma_col:
-	addu t4, t4, a4
-	j loop
+	add t4, t4, a3
+
+resta_c:
+	slt t6, t4, a3
+	beq t6, zero, resta_col
+	j cuentas
 
 resta_col:
-	subu t4, t4, a4
-	j loop
+	subu t4, t4, a3
+
+cuentas:
+	mult a3, t4
+	mflo t5
+	subu t5, t5, t4				# (m*c)-c
+	addu t5, t5, t3				# ((m*c)-c) + f
+	addu t1, a0, t5 			# Sumo la cantidad de posiciones para posicionarme
+	lb t1, (t1)
+	beq t1, 1, encontrados		#matriz[posicion] == 1
+	j sumar_it
+
+encontrados:
+	addu t7, t7, 1		#encontrados + 1
+
+sumar_it:
+	addi s0,s0,4	#Incremento la direccion base de fOffset
+	addi s1,s1,4	#Incremento la direccion base de cOffset
+	addu t0, t0, 1
+	blt t0, 8, loop	#Repito hasta completar todos los vecinos
+	j salir
 
 salir:
-	//return
-	addu v0, t6, zero		# return encontrados
+	add v0, t7, zero
+	lw ra, 0(sp)
+   	addi sp, sp, 4
 	jr ra
 
 .end vecinos_s
