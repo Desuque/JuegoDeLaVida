@@ -23,14 +23,14 @@
 
 
 % Título principal del documento.
-\title{		\textbf{Un Modelo de Referencia para la Generación de Informes}}
+\title{		\textbf{Trabajo Práctico 1: Conjunto de Instrucciones MIPS}}
 
 % Información sobre los autores.
 \author{	José Ignacio Sbruzzi, \textit{Padrón Nro. 97.452}                     \\
             \texttt{ jose\_sbruzzi@hotmail.com }                                              \\
-            Leandro Huemul Desuque, \textit{Padrón Nro. 00.000}                     \\
-            \texttt{ dirección de e-mail }                                              \\[2.5ex]
-            \normalsize{Grupo Nro. 0 - 2do. Cuatrimestre de 2006}                       \\
+            Leandro Huemul Desuque, \textit{Padrón Nro. 95836}                     \\
+            \texttt{ desuqueleandro@gmail.com }                                              \\[2.5ex]
+            \normalsize{2do. Cuatrimestre de 2016}                       \\
             \normalsize{66.20 Organización de Computadoras}                             \\
             \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
        }
@@ -48,33 +48,93 @@
 
 % Resumen
 \begin{abstract}
-Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en assemly MIPS.
+Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en Assembly MIPS.
 El objetivo del presente trabajo fue además familiarizarse con el entorno GXEmul y con LaTeX.
 \end{abstract}
 
 \section{Introducción}
-Inicialmente, se implementó en C el Juego de la Vida de Conway. El Juego de la Vida es un autómata celular descripto por John Conway en 1970 ~\ref{Conway}. Inicialmente fue publicado como un juego matemático recreacional. El juego es "de cero jugadores" en el sentido de que no es necesario propiamente jugar, sino que lo único que hace el jugador es decidir la configuración inicial y observar cómo evoluciona el sistema. Se rige por reglas sencillas: las células nacen, sobreviven o mueren dependiendo de la cantidad de vecinos vivos que tienen, tal como descripto en el enunciado de este trabajo práctico. Así, es un sistema simple, y una buena elección si el objetivo final no es construir un sistema elaborado sino familiarizarse con el software necesario para ello.
+Inicialmente, se implementó en C el Juego de la Vida de Conway. El Juego de la Vida es un autómata celular descripto por John Conway en 1970 ~\ref{Conway}. Inicialmente fue publicado como un juego matemático recreacional. El juego es "de cero jugadores" en el sentido de que no es necesario propiamente jugar, sino que lo único que hace el jugador es decidir la configuración inicial y observar cómo evoluciona el sistema. Se rige por reglas sencillas: las células nacen, sobreviven o mueren dependiendo de la cantidad de vecinos vivos que tienen, tal como se describe en el enunciado de este trabajo práctico. Así, es un sistema simple, y una buena elección si el objetivo final no es construir un sistema elaborado sino familiarizarse con el software necesario para ello.
 
-Posteriormente, se reprogramó una parte del programa en assembly MIPS, para esto se utilizó el emulador GXEmul. GXEmul emula arquitecturas de computadoras y permite correr sistemas operativos sobre ellos~\ref{GXemul}. De esta manera, se compiló y se corrió el programa en assembly MIPS pese a no disponer de un equipo MIPS.
+Posteriormente, se reprogramó una parte del programa en Assembly MIPS, para esto se utilizó el emulador GXEmul. GXEmul emula arquitecturas de computadoras y permite correr sistemas operativos sobre ellos~\ref{GXemul}. De esta manera, se compiló y se corrió el programa en Assembly MIPS pese a no disponer de un equipo MIPS.
 % \textit{66.20 Organización de Computadoras} ESTO PONE TEXTO EN CURSIVA
 
-\section{desarrollo}
+\section{Desarrollo}
 \subsection{Documentación del código C}
+La documentacion de las funciones se detalla por orden de aparición en el código fuente.
+
+\subsubsection{\texttt{help}}
+\texttt{help} despliega la ayuda para el usuario final.
+
+\subsubsection{\texttt{version}}
+\texttt{version} informa la version del código fuente.
+
+\subsubsection{\texttt{getPosicion}}
+\texttt{getPosicion} calcula y devuelve la posición relativa de una posicion (i,j) en base al tamaño de la matriz.
+
+\subsubsection{\texttt{cargarMatriz}}
+\texttt{cargarMatriz} es una función que, en base a la matriz inicial y una posicion específica (que se corresponde a la leída por el archivo de entrada) asigna dicha posición como ENCENDIDA (o viva) dentro de la matriz.
+
+\subsubsection{\texttt{infoValida}}
+\texttt{infoValida} se encarga de validar que una coordenada no sea mayor al tamaño de la matriz. 
+
+\subsubsection{\texttt{procesarArchivo}}
+\texttt{procesarArchivo} se encarga de leer el archivo de entrada y llamar a las respectivas funciones para dejar la matriz en un estado válido.
+
+\subsubsection{\texttt{inicializarMatriz}}
+\texttt{inicializarMatriz} se encarga de asignar la memoria de la matriz y dejar todas las posiciones como APAGADAS (o muertas).
+
+\subsubsection{\texttt{siguienteMatriz}}
+\texttt{siguienteMatriz} genera, a partir de una matriz (es decir, un estado), la matriz que le sigue según las reglas del juego.
+
+\subsubsection{\texttt{grabarEstado}}
+\texttt{grabarEstado} genera la imagen de salida en formato plain PBM.
+
+\subsubsection{\texttt{liberarRecursos}}
+\texttt{liberarRecursos} es una función que se encarga de liberar la memoria asignada para contener la matriz.
+
+\subsubsection{\texttt{avanzarEstados}}
+\texttt{avanzarEstados} es una función encargada de llamar a grabarEstado y liberar los recursos a medida que las imagenes de salida son generadas.
 
 \subsubsection{\texttt{vecinos}}
 \texttt{vecinos} es una función que, a partir de la matriz y de una celda, determina cuántos vecinos vivos (es decir, casilleros ocupados) tiene una celda. De esta manera, la función \texttt{siguienteMatriz} puede definir dónde suceden nacimientos, muertes y supervivencias.
-\subsubsection{\texttt{siguienteMatriz}}
-\texttt{siguienteMatriz} genera, a partir de una matriz (es decir, un estado), la matriz que le sigue, según las reglas del juego.
 
-\subsubsection{\texttt{El resto acá...}}
-asdasd
+\subsection{Documentación del código Assembly MIPS}
+La función específica que se desarrolló en Assembly MIPS es la llamada "vecinos", o bien "vecinos\_s" (nombre utilizado en el código fuente para hacer referencia a la versión MIPS).
 
-\subsection{Documentación del código assembly}
-...
+Esta función implementa la búsqueda de vecinos ENCENDIDOS para una determinada posición (i,j). Se utiliza un contador para llevar cuenta de la cantidad de vecinos vivos encontrados dentro de los 8 posibles (que representaría el caso límite de todos los vecinos de una determinada posición vivos).
+
+Para esto, la función recibe por parámetro la dirección de memoria de inicio de la matriz, la posicion (i,j) a procesar y el tamaño final de la matriz (ancho y alto).
+
+A diferencia de la versión de C, la cual calcula la posición en memoria en base a la posición relativa (i,j) utilizando la función "getPosicion", en la implementación MIPS se optó por desarrollar dicha funcionalidad dentro de la misma funcion "vecinos".
+
+\subsubsection{\texttt{Especificaciones}}
+Se reservaron 12 bytes para el área de SRA, 4 bytes para salvar el registro \textit{ra} (no era necesario ya que en ningun momento los saltos para realizar comparaciones modifican el ra, de cualquier forma y como buena práctica, se guardó su valor), 4 bytes para salvar el registro \textit{gp} y 4 bytes para salvar el registro \textit{fp}.
+
+
+OJO CON QUE LOS PARAMETROS NO SE ALMACENAN, TERMINAR Y REVISAR
+Los parámetros no se almacenan ya que no fue necesario, al ser una matriz cuadrada (MxM), el cálculo de la posición relativa se hizo utilizando solo el ancho. Se pasó el alto para cumplir con la firma pedida por el trabajo práctico y para contemplar posibles mejoras u optimizaciones a futuro (por ejemplo, que se permitan matrices de MxN).
+
 LEANDRO acordate del coso del stack, revoleame un png y yo lo enchufo bien acá
 
 \subsection{Dificultades}
 La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
+
+\section{Compilación}
+En lugar de utilizar un \textit{makefile} se optó por programar un script (\textit{hacer.sh}) para dicha tarea, que cumple el mismo objetivo: ejecutar las instrucciones adecuadas de compilacion. 
+
+Se compilan de manera individual cada uno de los archivos fuente de extension \textit{c} y \textit{S} a traves del ejecutable \textit{gcc}.
+
+Los argumentos utilizados para la compilación son los siguientes:
+
+\begin{description}
+\item[-c] Compila el código fuente pero no corre el linker. Genera el código objeto.
+
+\item[-o] Especifica el archivo de salida (ya sea un archivo objeto, ejecutable, ensamblado).
+
+\item[-Wall] Activa los mensajes de warning.
+
+\item[-I] Agrega el directorio especificado a la lista de directorios buscados para los archivos header
+\end{description}
 
 \section{Resultados}
 \subsection{Medidas de tiempo de ejecución}
