@@ -6,9 +6,6 @@
 	.align 2
 	.globl	vecinos_s
 	.ent	vecinos_s
-	.frame	$fp,44,ra
-	.set	noreorder
-	.set	reorder
 
 /***
 unsigned int vecinos(unsigned char* matriz,
@@ -20,14 +17,15 @@ Nota: Como la matriz es cuadrada, no se usa el ultimo argumento
 ***/ 
 
 vecinos_s:
-	subu	sp, sp, 44 	#Expando el stack (5 argumentos + stack)
-   	sw ra, 40(sp)	//ra en stack
-	sw $fp, 36(sp)
-  	sw gp, 32(sp)
-	sw a0, 28(sp)	//*matriz[0][0]
-	sw a1, 24(sp)	//i (fila)
-	sw a2, 20(sp)	//j (columna)
-	sw a3, 16(sp)	//m (tam_fila)
+	.frame	$fp,44,ra
+	subu	sp, sp, 44 	#Expando el stack
+   	sw ra, 16(sp)	//ra en stack
+  	sw gp, 20(sp)
+	sw $fp, 24(sp)
+	sw a0, 32(sp)	//*matriz[0][0]
+	sw a1, 36(sp)	//i (fila)
+	sw a2, 40(sp)	//j (columna)
+	sw a3, 44(sp)	//m (tam_fila)
 
 	li t0, 0			#Inicializo el flag del loop
 	li t7, 0			#Inicializo vecinos
@@ -91,9 +89,10 @@ sumar_it:
 
 salir:
 	add v0, t7, zero
-	lw ra, 40(sp)
-	lw $fp, 36(sp)
-	lw gp, 32(sp)
+	lw ra, 16(sp)
+	lw gp, 20(sp)
+	lw $fp, 24(sp)
+
    	addi sp, sp, 4
 	jr ra
 
