@@ -107,17 +107,18 @@ Para esto, la función recibe por parámetro la dirección de memoria de inicio de 
 
 A diferencia de la versión de C, la cual calcula la posición en memoria en base a la posición relativa (i,j) utilizando la función "getPosicion", en la implementación MIPS se optó por desarrollar dicha funcionalidad dentro de la misma funcion "vecinos".
 
+\subsubsection{\texttt{Especificaciones}}
+
 \begin{figure}[!htp]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{imagenes/imagenStack.eps}
+\includegraphics[width=0.4\textwidth]{imagenes/imagenStack.eps}
 \end{center}
-\caption{Stack de la función vecinos} \label{todosGlider}
+\caption{Stack de la función vecinos} \label{fig:stack}
 \end{figure}
 
-\subsubsection{\texttt{Especificaciones}}
 Se reservaron 12 bytes para el área de SRA, 4 bytes para salvar el registro \textit{ra} (no era necesario ya que en ningun momento los saltos para realizar comparaciones modifican el ra, de cualquier forma y como buena práctica, se guardó su valor), 4 bytes para salvar el registro \textit{gp} y 4 bytes para salvar el registro \textit{fp}.
 
-Al tratarse de una matriz cuadrada (MxM), el cálculo de la posición relativa se hizo utilizando solo el ancho. Se pasó el alto para cumplir con la firma pedida por el trabajo práctico y para contemplar posibles mejoras u optimizaciones a futuro (por ejemplo, que se permitan matrices de MxN). Se reservaron 16 bytes en concepto de ABA, respetando ABI.
+Al tratarse de una matriz cuadrada (MxM), el cálculo de la posición relativa se hizo utilizando solo el ancho. Se pasó el alto para cumplir con la firma pedida por el trabajo práctico y para contemplar posibles mejoras u optimizaciones a futuro (por ejemplo, que se permitan matrices de MxN). Se reservaron 16 bytes en concepto de ABA, respetando ABI. ~\ref{fig:stack}.
 
 \subsection{Dificultades}
 La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
@@ -140,7 +141,7 @@ Los argumentos utilizados para la compilación son los siguientes:
 \end{description}
 
 \section{Resultados}
-\subsection{Medidas de tiempo de ejecución}
+\subsection{Medidas de tiempo}
 Se analizarán los tiempos de ejecución tanto para la versión completa en C (sin optimizaciones del compilador), como para la versión MIPS. Se tomarán distintos casos de prueba para visualiar el rendimiento de cada una.
 
 Todas las pruebas se realizaron utilizando los archivos propuestos por la cátedra sobre un entorno Ubuntu (para la versión en C) y sobre el emulador GXemul (para la version MIPS).
@@ -159,14 +160,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
   Glider	& 1000	&\(1.620s\) 	&\(157.485s\) \\
 
   \hline
+
 \end{tabular}
 
-\caption{Tiempos medidos Glider}
-\label{tab:resultados}
-\end{table}
-
-\begin{table}[h!t]
-\centering
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
@@ -175,14 +171,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
   Pento	& 1000	&\(1.629s\) 	&\(163.15s\) \\
 
   \hline
+
 \end{tabular}
 
-\caption{Tiempos medidos Pento}
-\label{tab:resultados}
-\end{table}
-
-\begin{table}[h!t]
-\centering
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
@@ -193,7 +184,8 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
   \hline
 \end{tabular}
 
-\caption{Tiempos medidos Sapo}
+
+\caption{Tiempos medidos}
 \label{tab:resultados}
 \end{table}
 
@@ -258,9 +250,13 @@ Se puede concluir que, pese a no ser más eficiente la versión en MIPS, es una al
 % Citas bibliográficas.
 \begin{thebibliography}{99}
 
-\bibitem{Conway} Gardner, Martin. ``Mathematical Games - The fantastic combinations of John Conway's new solitaire game 'life` '' Scientific America, 223. pp. 120-123. ISBN 0-89454-001-7. Archivado del original en https://web.archive.org/web/20090603015231/http://ddi.cs.uni-potsdam.de/HyFISCH/Produzieren/lis\_projekt/proj\_gamelife/ConwayScientificAmerican.htm . Consultado en septiembre 2016.
+\bibitem{Conway} Gardner, Martin. ``Mathematical Games - The fantastic combinations of John Conway's new solitaire game 'life` '' Scientific America, 223. pp. 120-123. ISBN 0-89454-001-7. Archivado del original en: https://ddi.cs.uni-potsdam.de/HyFISCH/Produzieren/lis\_projekt/proj\_gamelife/ConwaySci-entificAmerican.htm
 
-\bibitem{GXemul} Sitio web de GXemul http://gxemul.sourceforge.net/ . Consultado en septiembre 2016.
+Consultado en septiembre 2016.
+
+\bibitem{GXemul} Sitio web de GXemul http://gxemul.sourceforge.net/
+
+Consultado en septiembre 2016.
 
 \end{thebibliography}
 
