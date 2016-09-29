@@ -1,4 +1,5 @@
 #include "vecinos.h"
+#include <stdio.h>
 
 #define ENCENDIDO 1
 
@@ -21,7 +22,7 @@ unsigned int vecinos(unsigned char* matriz,
 		if (c < 0 ) c += n;
 		if (c >= n) c -= n;
 
-		unsigned int posicion = ((m*c)-c)+f;
+		unsigned int posicion = (m*f)+c;
 		if ( matriz[posicion] == ENCENDIDO ) encontrados += 1;
 	}
 	return encontrados;

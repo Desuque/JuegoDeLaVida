@@ -28,7 +28,7 @@
 % Información sobre los autores.
 \author{	José Ignacio Sbruzzi, \textit{Padrón Nro. 97.452}                     \\
             \texttt{ jose\_sbruzzi@hotmail.com }                                              \\
-            Leandro Huemul Desuque, \textit{Padrón Nro. 95836}                     \\
+            Leandro Huemul Desuque, \textit{Padrón Nro. 95.836}                     \\
             \texttt{ desuqueleandro@gmail.com }                                              \\[2.5ex]
             \normalsize{2do. Cuatrimestre de 2016}                       \\
             \normalsize{66.20 Organización de Computadoras}                             \\
@@ -138,11 +138,36 @@ Los argumentos utilizados para la compilación son los siguientes:
 
 \section{Resultados}
 \subsection{Medidas de tiempo de ejecución}
-HACERRR
+Se analizarán los tiempos de ejecución tanto para la versión completa en C (sin optimizaciones del compilador), como para la versión MIPS. Se tomarán distintos casos de prueba para visualiar el rendimiento de cada una.
+
+Todas las pruebas se realizaron utilizando los archivos propuestos por la cátedra sobre un entorno Ubuntu (para la versión en C) y sobre el emulador GXemul (para la version MIPS).
+
+\subsubsection{Resultados}
+Se obtuvieron los siguientes resultados (el tiempo informado es el tiempo usr + real).
+
+En todas las pruebas, las matrices se establecieron con las dimensiones del caso de ejemplo: 20x20.
+
+\begin{table}[h!t]
+\centering
+\begin{tabular}{| l | r | m | n |}
+  \hline
+  Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
+  Glider	& 10	&\(0.018s\) \\
+  Glider	& 100	&\(0.134s\) \\
+  Glider	& 1000	&\(13.352s\) \\
+
+  \hline
+\end{tabular}
+
+\caption{Tiempos medidos con salida PBM}
+\label{tab:resultados}
+\end{table}
+
+
 acá tenes que anteponer time a la corrida de conway y linux te toma cuánto tardan las cosas, fijate cuánto cambia con el .S y sin el .S y listo, 3 líneas
 
 \subsection{Corridas de prueba}
-A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como pedido.
+A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como fue pedido.
 
 \subsubsection{Glider}
 Glider es una configuración del autómata que se mueve por la pantalla sin destruirse: atravieza un ciclo de cuatro estados, al cabo de los cuales regresa a la configuración inicial, pero desplazada.
