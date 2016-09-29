@@ -22,7 +22,7 @@ Nota: Como la matriz es cuadrada, no se usa el ultimo argumento
 vecinos_s:
 	subu	sp, sp, 44 	#Expando el stack (5 argumentos + stack)
    	sw ra, 40(sp)	//ra en stack
-	sw fp, 36(sp)
+	sw $fp, 36(sp)
   	sw gp, 32(sp)
 	sw a0, 28(sp)	//*matriz[0][0]
 	sw a1, 24(sp)	//i (fila)
@@ -92,7 +92,7 @@ sumar_it:
 salir:
 	add v0, t7, zero
 	lw ra, 40(sp)
-	lw fp, 36(sp)
+	lw $fp, 36(sp)
 	lw gp, 32(sp)
    	addi sp, sp, 4
 	jr ra
