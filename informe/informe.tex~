@@ -23,14 +23,14 @@
 
 
 % Título principal del documento.
-\title{		\textbf{Un Modelo de Referencia para la Generación de Informes}}
+\title{		\textbf{Trabajo Práctico 1: Conjunto de Instrucciones MIPS}}
 
 % Información sobre los autores.
 \author{	José Ignacio Sbruzzi, \textit{Padrón Nro. 97.452}                     \\
             \texttt{ jose\_sbruzzi@hotmail.com }                                              \\
-            Leandro Huemul Desuque, \textit{Padrón Nro. 00.000}                     \\
-            \texttt{ dirección de e-mail }                                              \\[2.5ex]
-            \normalsize{Grupo Nro. 0 - 2do. Cuatrimestre de 2006}                       \\
+            Leandro Huemul Desuque, \textit{Padrón Nro. 95.836}                     \\
+            \texttt{ desuqueleandro@gmail.com }                                              \\[2.5ex]
+            \normalsize{2do. Cuatrimestre de 2016}                       \\
             \normalsize{66.20 Organización de Computadoras}                             \\
             \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires}            \\
        }
@@ -48,38 +48,157 @@
 
 % Resumen
 \begin{abstract}
-Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en assemly MIPS.
+Se desarrolló un programa en C que simula el Juego de la Vida de Conway, habiéndose implementado una parte específica en Assembly MIPS.
 El objetivo del presente trabajo fue además familiarizarse con el entorno GXEmul y con LaTeX.
 \end{abstract}
 
 \section{Introducción}
-Inicialmente, se implementó en C el Juego de la Vida de Conway. El Juego de la Vida es un autómata celular descripto por John Conway en 1970 ~\ref{Conway}. Inicialmente fue publicado como un juego matemático recreacional. El juego es "de cero jugadores" en el sentido de que no es necesario propiamente jugar, sino que lo único que hace el jugador es decidir la configuración inicial y observar cómo evoluciona el sistema. Se rige por reglas sencillas: las células nacen, sobreviven o mueren dependiendo de la cantidad de vecinos vivos que tienen, tal como descripto en el enunciado de este trabajo práctico. Así, es un sistema simple, y una buena elección si el objetivo final no es construir un sistema elaborado sino familiarizarse con el software necesario para ello.
+Inicialmente, se implementó en C el Juego de la Vida de Conway. El Juego de la Vida es un autómata celular descripto por John Conway en 1970 ~\ref{Conway}. Inicialmente fue publicado como un juego matemático recreacional. El juego es "de cero jugadores" en el sentido de que no es necesario propiamente jugar, sino que lo único que hace el jugador es decidir la configuración inicial y observar cómo evoluciona el sistema. Se rige por reglas sencillas: las células nacen, sobreviven o mueren dependiendo de la cantidad de vecinos vivos que tienen, tal como se describe en el enunciado de este trabajo práctico. Así, es un sistema simple, y una buena elección si el objetivo final no es construir un sistema elaborado sino familiarizarse con el software necesario para ello.
 
-Posteriormente, se reprogramó una parte del programa en assembly MIPS, para esto se utilizó el emulador GXEmul. GXEmul emula arquitecturas de computadoras y permite correr sistemas operativos sobre ellos~\ref{GXemul}. De esta manera, se compiló y se corrió el programa en assembly MIPS pese a no disponer de un equipo MIPS.
+Posteriormente, se reprogramó una parte del programa en Assembly MIPS, para esto se utilizó el emulador GXEmul. GXEmul emula arquitecturas de computadoras y permite correr sistemas operativos sobre ellos~\ref{GXemul}. De esta manera, se compiló y se corrió el programa en Assembly MIPS pese a no disponer de un equipo MIPS.
 % \textit{66.20 Organización de Computadoras} ESTO PONE TEXTO EN CURSIVA
 
-\section{desarrollo}
+\section{Desarrollo}
 \subsection{Documentación del código C}
+La documentacion de las funciones se detalla por orden de aparición en el código fuente.
+
+\subsubsection{\texttt{help}}
+\texttt{help} despliega la ayuda para el usuario final.
+
+\subsubsection{\texttt{version}}
+\texttt{version} informa la version del código fuente.
+
+\subsubsection{\texttt{getPosicion}}
+\texttt{getPosicion} calcula y devuelve la posición relativa de una posicion (i,j) en base al tamaño de la matriz.
+
+\subsubsection{\texttt{cargarMatriz}}
+\texttt{cargarMatriz} es una función que, en base a la matriz inicial y una posicion específica (que se corresponde a la leída por el archivo de entrada) asigna dicha posición como ENCENDIDA (o viva) dentro de la matriz.
+
+\subsubsection{\texttt{infoValida}}
+\texttt{infoValida} se encarga de validar que una coordenada no sea mayor al tamaño de la matriz. 
+
+\subsubsection{\texttt{procesarArchivo}}
+\texttt{procesarArchivo} se encarga de leer el archivo de entrada y llamar a las respectivas funciones para dejar la matriz en un estado válido.
+
+\subsubsection{\texttt{inicializarMatriz}}
+\texttt{inicializarMatriz} se encarga de asignar la memoria de la matriz y dejar todas las posiciones como APAGADAS (o muertas).
+
+\subsubsection{\texttt{siguienteMatriz}}
+\texttt{siguienteMatriz} genera, a partir de una matriz (es decir, un estado), la matriz que le sigue según las reglas del juego.
+
+\subsubsection{\texttt{grabarEstado}}
+\texttt{grabarEstado} genera la imagen de salida en formato plain PBM.
+
+\subsubsection{\texttt{liberarRecursos}}
+\texttt{liberarRecursos} es una función que se encarga de liberar la memoria asignada para contener la matriz.
+
+\subsubsection{\texttt{avanzarEstados}}
+\texttt{avanzarEstados} es una función encargada de llamar a grabarEstado y liberar los recursos a medida que las imagenes de salida son generadas.
 
 \subsubsection{\texttt{vecinos}}
 \texttt{vecinos} es una función que, a partir de la matriz y de una celda, determina cuántos vecinos vivos (es decir, casilleros ocupados) tiene una celda. De esta manera, la función \texttt{siguienteMatriz} puede definir dónde suceden nacimientos, muertes y supervivencias.
-\subsubsection{\texttt{siguienteMatriz}}
-\texttt{siguienteMatriz} genera, a partir de una matriz (es decir, un estado), la matriz que le sigue, según las reglas del juego.
 
-\subsubsection{\texttt{El resto acá...}}
-asdasd
+\subsection{Documentación del código Assembly MIPS}
+La función específica que se desarrolló en Assembly MIPS es la llamada "vecinos", o bien "vecinos\_s" (nombre utilizado en el código fuente para hacer referencia a la versión MIPS).
 
-\subsection{Documentación del código assembly}
-...
+Esta función implementa la búsqueda de vecinos ENCENDIDOS para una determinada posición (i,j). Se utiliza un contador para llevar cuenta de la cantidad de vecinos vivos encontrados dentro de los 8 posibles (que representaría el caso límite de todos los vecinos de una determinada posición vivos).
+
+Para esto, la función recibe por parámetro la dirección de memoria de inicio de la matriz, la posicion (i,j) a procesar y el tamaño final de la matriz (ancho y alto).
+
+A diferencia de la versión de C, la cual calcula la posición en memoria en base a la posición relativa (i,j) utilizando la función "getPosicion", en la implementación MIPS se optó por desarrollar dicha funcionalidad dentro de la misma funcion "vecinos".
+
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/imagen stack.eps}
+\end{center}
+\caption{Stack de la función vecinos} \label{todosGlider}
+\end{figure}
+
+\subsubsection{\texttt{Especificaciones}}
+Se reservaron 12 bytes para el área de SRA, 4 bytes para salvar el registro \textit{ra} (no era necesario ya que en ningun momento los saltos para realizar comparaciones modifican el ra, de cualquier forma y como buena práctica, se guardó su valor), 4 bytes para salvar el registro \textit{gp} y 4 bytes para salvar el registro \textit{fp}.
+
+Al tratarse de una matriz cuadrada (MxM), el cálculo de la posición relativa se hizo utilizando solo el ancho. Se pasó el alto para cumplir con la firma pedida por el trabajo práctico y para contemplar posibles mejoras u optimizaciones a futuro (por ejemplo, que se permitan matrices de MxN). Se reservaron 16 bytes en concepto de ABA, respetando ABI.
 
 \subsection{Dificultades}
 La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
 
+\section{Compilación}
+En lugar de utilizar un \textit{makefile} se optó por programar un script (\textit{hacer.sh}) para dicha tarea, que cumple el mismo objetivo: ejecutar las instrucciones adecuadas de compilacion. 
+
+Se compilan de manera individual cada uno de los archivos fuente de extension \textit{c} y \textit{S} a traves del ejecutable \textit{gcc}.
+
+Los argumentos utilizados para la compilación son los siguientes:
+
+\begin{description}
+\item[-c] Compila el código fuente pero no corre el linker. Genera el código objeto.
+
+\item[-o] Especifica el archivo de salida (ya sea un archivo objeto, ejecutable, ensamblado).
+
+\item[-Wall] Activa los mensajes de warning.
+
+\item[-I] Agrega el directorio especificado a la lista de directorios buscados para los archivos header
+\end{description}
+
 \section{Resultados}
 \subsection{Medidas de tiempo de ejecución}
+Se analizarán los tiempos de ejecución tanto para la versión completa en C (sin optimizaciones del compilador), como para la versión MIPS. Se tomarán distintos casos de prueba para visualiar el rendimiento de cada una.
+
+Todas las pruebas se realizaron utilizando los archivos propuestos por la cátedra sobre un entorno Ubuntu (para la versión en C) y sobre el emulador GXemul (para la version MIPS).
+
+Se obtuvieron los siguientes resultados (el tiempo informado es el tiempo usr + real).
+
+En todas las pruebas, las matrices se establecieron con las dimensiones del caso de ejemplo: 20x20.
+
+\begin{table}[h!t]
+\centering
+\begin{tabular}{| l | r | m | n |}
+  \hline
+  Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
+  Glider	& 10	&\(0.022s\) 	&\(2.248s\) \\
+  Glider	& 100	&\(0.124s\) 	&\(14.769s\) \\
+  Glider	& 1000	&\(1.620s\) 	&\(157.485s\) \\
+
+  \hline
+\end{tabular}
+
+\caption{Tiempos medidos Glider}
+\label{tab:resultados}
+\end{table}
+
+\begin{table}[h!t]
+\centering
+\begin{tabular}{| l | r | m | n |}
+  \hline
+  Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
+  Pento	& 10	&\(0.013s\) 	&\(1.43s\) \\
+  Pento	& 100	&\(0.089s\) 	&\(14.983s\) \\
+  Pento	& 1000	&\(1.629s\) 	&\(163.15s\) \\
+
+  \hline
+\end{tabular}
+
+\caption{Tiempos medidos Pento}
+\label{tab:resultados}
+\end{table}
+
+\begin{table}[h!t]
+\centering
+\begin{tabular}{| l | r | m | n |}
+  \hline
+  Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
+  Sapo	& 10	&\(0.052s\) 	&\(1.092s\) \\
+  Sapo	& 100	&\(0.253s\) 	&\(18.252s\) \\
+  Sapo	& 1000	&\(1.904s\) 	&\(172.32s\) \\
+
+  \hline
+\end{tabular}
+
+\caption{Tiempos medidos Sapo}
+\label{tab:resultados}
+\end{table}
 
 \subsection{Corridas de prueba}
-A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como pedido.
+A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como fue pedido.
 
 \subsubsection{Glider}
 Glider es una configuración del autómata que se mueve por la pantalla sin destruirse: atravieza un ciclo de cuatro estados, al cabo de los cuales regresa a la configuración inicial, pero desplazada.
@@ -128,9 +247,13 @@ El patrón Sapo, al igual que Glider, atravieza un ciclo, pero de 2 estados (no d
 \end{figure}
 
 \section{Conclusiones}
-HACERRRRRR
-Se presentó un modelo para que los alumnos puedan tomar como referencia en la redacción de sus informes de trabajos prácticos.
+Analizando los resultados obtenidos se puede observar que la implementación completa en C es varios órdenes de mágnitud más eficiente que la versión implementada con una porción en MIPS, aun cuando no se activaron las optimizaciones del compilador. Esta diferencia de tiempo y performance, se hace más evidente a medida que incrementamos la cantidad de pasos, por ende, de cálculos e imágenes de salida.
 
+Aun cuando la función a implementar era sencilla, llevar su codificación a MIPS conlleva un trabajo extra tanto de aprendizaje como de pruebas, dado que no es simple encontrar errores en caso de que no se llegue al resultado esperado.
+
+Por último, no debemos descartar que la porción del programa total desarrollada en MIPS es pequeña en relación a la desarrollada en C y que se está utilizando un emulador para correr las instrucciones. Esto último, sumado a que se está trabajando con matrices y archivos en todo momento, son factores que no se tuvieron en cuenta en los tiempos finales calculados y sin embargo son de importancia crítica si se quisiera realizar un estudio exhaustivo de rendimiento.
+
+Se puede concluir que, pese a no ser más eficiente la versión en MIPS, es una alternativa interesante cuando se quiere desarrollar software para un sistema específico. Por otra parte, al programar en MIPS se pueden conocer los tiempos precisos de ejecución de nuestros programas, sin depender de las modificaciones posteriores realizadas de manera automática por el compilador, esto puede resultarnos de suma importancia en aplicaciones en los que el tiempo de ejecución es un factor clave.
 
 % Citas bibliográficas.
 \begin{thebibliography}{99}

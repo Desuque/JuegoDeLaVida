@@ -107,6 +107,13 @@ Para esto, la función recibe por parámetro la dirección de memoria de inicio de 
 
 A diferencia de la versión de C, la cual calcula la posición en memoria en base a la posición relativa (i,j) utilizando la función "getPosicion", en la implementación MIPS se optó por desarrollar dicha funcionalidad dentro de la misma funcion "vecinos".
 
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{imagenes/imagenStack.eps}
+\end{center}
+\caption{Stack de la función vecinos} \label{todosGlider}
+\end{figure}
+
 \subsubsection{\texttt{Especificaciones}}
 Se reservaron 12 bytes para el área de SRA, 4 bytes para salvar el registro \textit{ra} (no era necesario ya que en ningun momento los saltos para realizar comparaciones modifican el ra, de cualquier forma y como buena práctica, se guardó su valor), 4 bytes para salvar el registro \textit{gp} y 4 bytes para salvar el registro \textit{fp}.
 
