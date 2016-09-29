@@ -110,11 +110,7 @@ A diferencia de la versión de C, la cual calcula la posición en memoria en base 
 \subsubsection{\texttt{Especificaciones}}
 Se reservaron 12 bytes para el área de SRA, 4 bytes para salvar el registro \textit{ra} (no era necesario ya que en ningun momento los saltos para realizar comparaciones modifican el ra, de cualquier forma y como buena práctica, se guardó su valor), 4 bytes para salvar el registro \textit{gp} y 4 bytes para salvar el registro \textit{fp}.
 
-
-OJO CON QUE LOS PARAMETROS NO SE ALMACENAN, TERMINAR Y REVISAR
-Los parámetros no se almacenan ya que no fue necesario, al ser una matriz cuadrada (MxM), el cálculo de la posición relativa se hizo utilizando solo el ancho. Se pasó el alto para cumplir con la firma pedida por el trabajo práctico y para contemplar posibles mejoras u optimizaciones a futuro (por ejemplo, que se permitan matrices de MxN).
-
-LEANDRO acordate del coso del stack, revoleame un png y yo lo enchufo bien acá
+Al tratarse de una matriz cuadrada (MxM), el cálculo de la posición relativa se hizo utilizando solo el ancho. Se pasó el alto para cumplir con la firma pedida por el trabajo práctico y para contemplar posibles mejoras u optimizaciones a futuro (por ejemplo, que se permitan matrices de MxN). Se reservaron 16 bytes en concepto de ABA, respetando ABI.
 
 \subsection{Dificultades}
 La construcción de una imagen en formato PBM presentó algunas dificultades ya que se usó PBM en vez de plain PBM, y en la descripción del formato PBM no había ejemplos de archivos PBM (sí los había de plain PBM). Un punto relativamente problemático del formato PBM es que cada pixel está asociado a un bit. Para evitar esta dificultad, se decidió que cada celda correspondería a un cuadrado de 8x8 pixeles, simplificando el fragmento del programa que guarda las imágenes.
@@ -142,7 +138,6 @@ Se analizarán los tiempos de ejecución tanto para la versión completa en C (sin 
 
 Todas las pruebas se realizaron utilizando los archivos propuestos por la cátedra sobre un entorno Ubuntu (para la versión en C) y sobre el emulador GXemul (para la version MIPS).
 
-\subsubsection{Resultados}
 Se obtuvieron los siguientes resultados (el tiempo informado es el tiempo usr + real).
 
 En todas las pruebas, las matrices se establecieron con las dimensiones del caso de ejemplo: 20x20.
@@ -152,9 +147,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Glider	& 10	&\(0.022s\) \\	&\(2.248s\) \\
-  Glider	& 100	&\(0.124s\) \\	&\(14.769s\) \\
-  Glider	& 1000	&\(1.620s\) \\	&\(157.485s\) \\
+  Glider	& 10	&\(0.022s\) 	&\(2.248s\) \\
+  Glider	& 100	&\(0.124s\) 	&\(14.769s\) \\
+  Glider	& 1000	&\(1.620s\) 	&\(157.485s\) \\
 
   \hline
 \end{tabular}
@@ -168,9 +163,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Pento	& 10	&\(0.013s\) \\	&\(1.43s\) \\
-  Pento	& 100	&\(0.089s\) \\	&\(14.983s\) \\
-  Pento	& 1000	&\(1.629s\) \\	&\(163.15s\) \\
+  Pento	& 10	&\(0.013s\) 	&\(1.43s\) \\
+  Pento	& 100	&\(0.089s\) 	&\(14.983s\) \\
+  Pento	& 1000	&\(1.629s\) 	&\(163.15s\) \\
 
   \hline
 \end{tabular}
@@ -184,9 +179,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Sapo	& 10	&\(0.052s\) \\	&\(1.092s\) \\
-  Sapo	& 100	&\(0.253s\) \\	&\(18.252s\) \\
-  Sapo	& 1000	&\(1.904s\) \\	&\(172.32s\) \\
+  Sapo	& 10	&\(0.052s\) 	&\(1.092s\) \\
+  Sapo	& 100	&\(0.253s\) 	&\(18.252s\) \\
+  Sapo	& 1000	&\(1.904s\) 	&\(172.32s\) \\
 
   \hline
 \end{tabular}

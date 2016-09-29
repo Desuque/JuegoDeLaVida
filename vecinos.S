@@ -6,7 +6,7 @@
 	.align 2
 	.globl	vecinos_s
 	.ent	vecinos_s
-	.frame	$fp,24,ra
+	.frame	$fp,44,ra
 	.set	noreorder
 	.set	reorder
 
@@ -20,11 +20,13 @@ Nota: Como la matriz es cuadrada, no se usa el ultimo argumento
 ***/ 
 
 vecinos_s:
-	subu	sp, sp, 24 	#Expando el stack (5 argumentos + stack)
-   	sw ra, 0(sp)	//ra en stack
-	sw a0, 4(sp)	//*matriz[0][0]
-	sw a1, 8(sp)	//i (fila)
-	sw a2, 12(sp)	//j (columna)
+	subu	sp, sp, 44 	#Expando el stack (5 argumentos + stack)
+   	sw ra, 40(sp)	//ra en stack
+	sw fp, 36(sp)
+  	sw gp, 32(sp)
+	sw a0, 28(sp)	//*matriz[0][0]
+	sw a1, 24(sp)	//i (fila)
+	sw a2, 20(sp)	//j (columna)
 	sw a3, 16(sp)	//m (tam_fila)
 
 	li t0, 0			#Inicializo el flag del loop
@@ -89,7 +91,9 @@ sumar_it:
 
 salir:
 	add v0, t7, zero
-	lw ra, 0(sp)
+	lw ra, 40(sp)
+	lw fp, 36(sp)
+	lw gp, 32(sp)
    	addi sp, sp, 4
 	jr ra
 
