@@ -152,19 +152,48 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Glider	& 10	&\(0.018s\) \\
-  Glider	& 100	&\(0.134s\) \\
-  Glider	& 1000	&\(13.352s\) \\
+  Glider	& 10	&\(0.022s\) \\	&\(2.248s\) \\
+  Glider	& 100	&\(0.124s\) \\	&\(14.769s\) \\
+  Glider	& 1000	&\(1.620s\) \\	&\(157.485s\) \\
 
   \hline
 \end{tabular}
 
-\caption{Tiempos medidos con salida PBM}
+\caption{Tiempos medidos Glider}
 \label{tab:resultados}
 \end{table}
 
+\begin{table}[h!t]
+\centering
+\begin{tabular}{| l | r | m | n |}
+  \hline
+  Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
+  Pento	& 10	&\(0.013s\) \\	&\(1.43s\) \\
+  Pento	& 100	&\(0.089s\) \\	&\(14.983s\) \\
+  Pento	& 1000	&\(1.629s\) \\	&\(163.15s\) \\
 
-acá tenes que anteponer time a la corrida de conway y linux te toma cuánto tardan las cosas, fijate cuánto cambia con el .S y sin el .S y listo, 3 líneas
+  \hline
+\end{tabular}
+
+\caption{Tiempos medidos Pento}
+\label{tab:resultados}
+\end{table}
+
+\begin{table}[h!t]
+\centering
+\begin{tabular}{| l | r | m | n |}
+  \hline
+  Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
+  Sapo	& 10	&\(0.052s\) \\	&\(1.092s\) \\
+  Sapo	& 100	&\(0.253s\) \\	&\(18.252s\) \\
+  Sapo	& 1000	&\(1.904s\) \\	&\(172.32s\) \\
+
+  \hline
+\end{tabular}
+
+\caption{Tiempos medidos Sapo}
+\label{tab:resultados}
+\end{table}
 
 \subsection{Corridas de prueba}
 A continuación se detalla el resultado de las corridas de prueba de glider, pento y sapo para 10 operaciones en una matriz de 20 por 20 tal como fue pedido.
@@ -216,9 +245,13 @@ El patrón Sapo, al igual que Glider, atravieza un ciclo, pero de 2 estados (no d
 \end{figure}
 
 \section{Conclusiones}
-HACERRRRRR
-Se presentó un modelo para que los alumnos puedan tomar como referencia en la redacción de sus informes de trabajos prácticos.
+Analizando los resultados obtenidos se puede observar que la implementación completa en C es varios órdenes de mágnitud más eficiente que la versión implementada con una porción en MIPS, aun cuando no se activaron las optimizaciones del compilador. Esta diferencia de tiempo y performance, se hace más evidente a medida que incrementamos la cantidad de pasos, por ende, de cálculos e imágenes de salida.
 
+Aun cuando la función a implementar era sencilla, llevar su codificación a MIPS conlleva un trabajo extra tanto de aprendizaje como de pruebas, dado que no es simple encontrar errores en caso de que no se llegue al resultado esperado.
+
+Por último, no debemos descartar que la porción del programa total desarrollada en MIPS es pequeña en relación a la desarrollada en C y que se está utilizando un emulador para correr las instrucciones. Esto último, sumado a que se está trabajando con matrices y archivos en todo momento, son factores que no se tuvieron en cuenta en los tiempos finales calculados y sin embargo son de importancia crítica si se quisiera realizar un estudio exhaustivo de rendimiento.
+
+Se puede concluir que, pese a no ser más eficiente la versión en MIPS, es una alternativa interesante cuando se quiere desarrollar software para un sistema específico. Por otra parte, al programar en MIPS se pueden conocer los tiempos precisos de ejecución de nuestros programas, sin depender de las modificaciones posteriores realizadas de manera automática por el compilador, esto puede resultarnos de suma importancia en aplicaciones en los que el tiempo de ejecución es un factor clave.
 
 % Citas bibliográficas.
 \begin{thebibliography}{99}

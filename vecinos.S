@@ -69,7 +69,7 @@ resta_col:
 	subu t4, t4, a3
 
 cuentas:
-	mult a3, t3 a3=m, c=t4, f=t3
+	mult a3, t3
 	mflo t5
 	addu t5, t5, t4				# (m*f)+c
 	addu t1, a0, t5 			# Sumo la cantidad de posiciones para posicionarme
