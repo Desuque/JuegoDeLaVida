@@ -56,7 +56,7 @@ int procesarArchivo(char* matriz, char* fileName, unsigned int filas,
 	if(archivo == NULL) {
 		fprintf(stderr, "Error al abrir el archivo.\n");
 	} else {
-		//printf("Leyendo estado inicial...\n");
+		printf("Leyendo estado inicial...\n");
 		while(fgets(string, sizeof(string), archivo) != NULL) {
 			unsigned int fila = atoi(&string[0]);
 			unsigned int columna = atoi(&string[2]);

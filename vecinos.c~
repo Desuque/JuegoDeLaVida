@@ -22,7 +22,7 @@ unsigned int vecinos(unsigned char* matriz,
 		if (c < 0 ) c += n;
 		if (c >= n) c -= n;
 
-		unsigned int posicion = POSICION(f,c,m,n);//(n *f)+c;//
+		unsigned int posicion = POSICION(f,c,m,n)//(n *f)+c;//
 		if ( matriz[posicion] == ENCENDIDO ) encontrados += 1;
 	}
 	return encontrados;

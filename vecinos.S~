@@ -95,7 +95,7 @@ EPI_FOR:
 	addiu t9, zero, 8		//t3 no lo necesito, lo piso con 8
 	bltu t2, t9, FOR		//si seleccionado < 8, sigue la fiesta
 
-L28:	addu v0, t1, zero		//return encontrados
+L28:	//addu v0, t1, zero		//return encontrados
 	
 	//destruir stack	
 	lw ra, RA(sp)
