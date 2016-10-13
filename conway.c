@@ -30,7 +30,7 @@ void help() {
 }
 
 void version() {
-	printf("El Juego de la Vida - Version 0.1\n");
+	printf("El Juego de la Vida - Version 0.2\n");
 	printf("Organizacion del computador, FIUBA.\n");
 }
 
@@ -87,7 +87,7 @@ char* inicializarMatriz(unsigned int filas, unsigned int columnas) {
 }
 
 //devuelve la matriz nueva
-char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas) {
+char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas, bool salidaPorPantalla) {
 	unsigned int f,c;
 	char* ret = inicializarMatriz(filas, columnas);
 	
@@ -96,14 +96,15 @@ char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas) {
 			unsigned int pos = POSICION(f,c, filas, columnas);
 			
 			unsigned int vecs = vecinos(matriz, f, c, filas, columnas);
-			/*
-			printf("%d",vecs);
-			if(matriz[pos] == APAGADO){
-				printf(" ");
-			}else{
-				printf("*");
+
+			if (salidaPorPantalla == true) {
+				printf("%d",vecs);
+				if(matriz[pos] == APAGADO){
+					printf(" ");
+				}else{
+					printf("*");
+				}
 			}
-			*/
 			if( vecs < 2 || vecs > 3 ){
 				//si una celda tiene menos de dos o más de tres vecinos, 
 				//su siguiente estado es apagado
@@ -121,7 +122,9 @@ char* siguienteMatriz(char* matriz, unsigned int filas, unsigned int columnas) {
 			}
 			
 		}
-		//printf("\n");
+		if(salidaPorPantalla == true) {
+			printf("\n");
+		}
 	}
 	return ret;
 }
@@ -158,19 +161,22 @@ void liberarRecursos(char* matriz) {
 }
 
 void avanzarEstados(char* matrizInicial, unsigned int iteraciones,
-		char* estado, unsigned int filas, unsigned int columnas) {
+		char* estado, unsigned int filas, unsigned int columnas, bool salidaPorPantalla) {
 	char* matrizActual = matrizInicial;
 	for(unsigned int i=0; i<iteraciones; i++) {
-		//generar nombreArchivo
-		char nombreArchivo[200];
-		sprintf(nombreArchivo,"%s_%d.pbm",estado, i+1);
-		//printf("Grabando %s\n", nombreArchivo);
+		if (salidaPorPantalla == false) {
+			//generar nombreArchivo
+			char nombreArchivo[200];
+			sprintf(nombreArchivo,"%s_%d.pbm",estado, i+1);
+			printf("Grabando %s\n", nombreArchivo);
 
-		//guardar la matriz actual
-		grabarEstado(matrizActual, filas, columnas, nombreArchivo);
-		
+			//guardar la matriz actual
+			grabarEstado(matrizActual, filas, columnas, nombreArchivo);
+		} else {
+			printf("Salida %d\n", i+1);
+		}
 		//generar siguiente matriz
-		char* siguiente = siguienteMatriz(matrizActual, filas, columnas);
+		char* siguiente = siguienteMatriz(matrizActual, filas, columnas, salidaPorPantalla);
 		
 		//liberar la matriz actual
 		if (matrizActual != matrizInicial){
@@ -179,11 +185,19 @@ void avanzarEstados(char* matrizInicial, unsigned int iteraciones,
 		//cambiar la actual por la siguiente
 		matrizActual = siguiente;
 	}
-	//liberarRecursos(matrizActual, filas);
-	
 	if (matrizActual != matrizInicial){
 		liberarRecursos(matrizActual);
 	}
+}
+
+void ejecutar(char *argv[], bool salida) {
+	int filas  = atoi(argv[2]);
+	int columnas  = atoi(argv[3]);
+	char* matriz = inicializarMatriz(filas, columnas);
+	if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
+		avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas, salida);
+	}
+	liberarRecursos(matriz);
 }
 
 int main (int argc, char *argv[]) {
@@ -191,6 +205,13 @@ int main (int argc, char *argv[]) {
 	int c;
 	int filas;
 	int columnas;
+	bool salidaPorPantalla;
+
+	//Si no se ingresa el argumento -o se muestra por pantalla la informacion
+	if (argc == TAM_DATOS) {
+		salidaPorPantalla = true;
+		ejecutar(argv, salidaPorPantalla);
+	}
 	while (1) {
 		static struct option long_options[] = {
 				{"help", no_argument, 0, 'h'},
@@ -210,18 +231,16 @@ int main (int argc, char *argv[]) {
 				version();
 				break;
 			case 'o':
-				filas  = atoi(argv[2]);
-				columnas  = atoi(argv[3]);
-				matriz = inicializarMatriz(filas, columnas);
-				if (procesarArchivo(matriz, argv[4], filas, columnas) != -1) {
-					avanzarEstados(matriz, atoi(argv[1]), optarg, filas, columnas);
-				}
-				liberarRecursos(matriz);
+				//Si se ingresa el argumento -o se obtiene la informacion en los archivos de salida
+				//y se desactiva la informacion por pantalla
+				salidaPorPantalla = false;
+				ejecutar(argv, salidaPorPantalla);
 				break;
 			case '?':
 				break;
 			default:
 				abort();
+
 		}
 	}
 	return 0;
