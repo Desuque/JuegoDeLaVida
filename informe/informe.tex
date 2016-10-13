@@ -144,20 +144,20 @@ Los argumentos utilizados para la compilación son los siguientes:
 \subsection{Medidas de tiempo}
 Se analizarán los tiempos de ejecución tanto para la versión completa en C (sin optimizaciones del compilador), como para la versión MIPS. Se tomarán distintos casos de prueba para visualiar el rendimiento de cada una.
 
-Todas las pruebas se realizaron utilizando los archivos propuestos por la cátedra sobre un entorno Ubuntu (para la versión en C) y sobre el emulador GXemul (para la version MIPS).
+Todas las pruebas se realizaron utilizando los archivos propuestos por la cátedra sobre el emulador GXemul (tanto para la version MIPS como para la version C).
 
 Se obtuvieron los siguientes resultados (el tiempo informado es el tiempo usr + real).
 
-En todas las pruebas, las matrices se establecieron con las dimensiones del caso de ejemplo: 20x20.
+En todas las pruebas, las matrices se establecieron con las dimensiones del caso de ejemplo: 20x20 variando la cantidad de pasos en cada una.
 
 \begin{table}[h!t]
 \centering
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Glider	& 10	&\(0.022s\) 	&\(2.248s\) \\
-  Glider	& 100	&\(0.124s\) 	&\(14.769s\) \\
-  Glider	& 1000	&\(1.620s\) 	&\(157.485s\) \\
+  Glider	& 10	&\(0.317s\) 	&\(0.411s\) \\
+  Glider	& 100	&\(5.721s\) 	&\(4.569s\) \\
+  Glider	& 1000	&\(62.549s\) 	&\(49.462s\) \\
 
   \hline
 
@@ -166,9 +166,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Pento	& 10	&\(0.013s\) 	&\(1.43s\) \\
-  Pento	& 100	&\(0.089s\) 	&\(14.983s\) \\
-  Pento	& 1000	&\(1.629s\) 	&\(163.15s\) \\
+  Pento	& 10	&\(0.457s\) 	&\(0.340s\) \\
+  Pento	& 100	&\(5.825s\) 	&\(5.955s\) \\
+  Pento	& 1000	&\(67.733s\) 	&\(50.137s\) \\
 
   \hline
 
@@ -177,9 +177,9 @@ En todas las pruebas, las matrices se establecieron con las dimensiones del caso
 \begin{tabular}{| l | r | m | n |}
   \hline
   Archivo	& Pasos &	Tiempo de ejecución(C)	& Tiempo de ejecución (MIPS)\\ \hline
-  Sapo	& 10	&\(0.052s\) 	&\(1.092s\) \\
-  Sapo	& 100	&\(0.253s\) 	&\(18.252s\) \\
-  Sapo	& 1000	&\(1.904s\) 	&\(172.32s\) \\
+  Sapo	& 10	&\(0.476s\) 	&\(0.433s\) \\
+  Sapo	& 100	&\(4.745s\) 	&\(4.506s\) \\
+  Sapo	& 1000	&\(63.422s\) 	&\(51.202s\) \\
 
   \hline
 \end{tabular}
@@ -239,13 +239,15 @@ El patrón Sapo, al igual que Glider, atravieza un ciclo, pero de 2 estados (no d
 \end{figure}
 
 \section{Conclusiones}
-Analizando los resultados obtenidos se puede observar que la implementación completa en C es varios órdenes de mágnitud más eficiente que la versión implementada con una porción en MIPS, aun cuando no se activaron las optimizaciones del compilador. Esta diferencia de tiempo y performance, se hace más evidente a medida que incrementamos la cantidad de pasos, por ende, de cálculos e imágenes de salida.
+Luego de ejecutar ambas versiones sobre el emulador y analizando los resultados obtenidos, se puede observar que la diferencia de tiempo entre una versión y otra no es significativa para una cantidad de pasos baja.
+
+A medida que aumentamos los pasos, por ende, los cálculos e imágenes de salida (si se activa dicha opción mediante el parámetro "-o") la implementación en MIPS se vuelve más eficiente frente a la versión completa en C.
 
 Aun cuando la función a implementar era sencilla, llevar su codificación a MIPS conlleva un trabajo extra tanto de aprendizaje como de pruebas, dado que no es simple encontrar errores en caso de que no se llegue al resultado esperado.
 
-Por último, no debemos descartar que la porción del programa total desarrollada en MIPS es pequeña en relación a la desarrollada en C y que se está utilizando un emulador para correr las instrucciones. Esto último, sumado a que se está trabajando con matrices y archivos en todo momento, son factores que no se tuvieron en cuenta en los tiempos finales calculados y sin embargo son de importancia crítica si se quisiera realizar un estudio exhaustivo de rendimiento.
+Por último, no debemos descartar que la porción del programa total desarrollada en MIPS es pequeña en relación a la desarrollada en C y que se está utilizando un emulador para correr las instrucciones. Esto último, sumado a que se está trabajando con matrices y archivos en todo momento, son factores que no se tuvieron en cuenta en una primera instancia, haciendo que las pruebas entre una versión y otra no puedan ser comparables. Para evitar esto último, todas las pruebas se ejecutaron nuevamente desde el emulador para realizar las pruebas.
 
-Se puede concluir que, pese a no ser más eficiente la versión en MIPS, es una alternativa interesante cuando se quiere desarrollar software para un sistema específico. Por otra parte, al programar en MIPS se pueden conocer los tiempos precisos de ejecución de nuestros programas, sin depender de las modificaciones posteriores realizadas de manera automática por el compilador, esto puede resultarnos de suma importancia en aplicaciones en los que el tiempo de ejecución es un factor clave.
+Se puede concluir que la versión MIPS es más eficiente que la versión completa en C para grandes tareas de cálculo, y prácticamente iguales si los cálculos a realizar no son excesivos. La versión MIPS es una alternativa interesante cuando se quiere desarrollar software para un sistema específico. Por otra parte, al programar en MIPS se pueden conocer los tiempos precisos de ejecución de nuestros programas, sin depender de las modificaciones posteriores realizadas de manera automática por el compilador, cuestión de suma importancia en aplicaciones en las que el tiempo de ejecución es un factor clave.
 
 % Citas bibliográficas.
 \begin{thebibliography}{99}
